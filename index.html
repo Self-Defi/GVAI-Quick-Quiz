@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>GVAI Quick Quiz — Learning Hub</title>
+
+  <meta
+    name="description"
+    content="GVAI Quick Quiz — a lightweight Self-Defi learning hub with an intro video, resources, and a guided AI quiz."
+  />
+
+  <!-- Favicon -->
+  <link
+    rel="icon"
+    type="image/png"
+    href="/GVAI-Quick-Quiz/assets/self-defi-logo.png"
+  />
+
+  <!-- Open Graph / Social Preview -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="GVAI Quick Quiz — Learning Hub" />
+  <meta
+    property="og:description"
+    content="Watch the intro video, explore the resources, and test your understanding with the GVAI Quick Quiz."
+  />
+  <meta
+    property="og:image"
+    content="https://self-defi.github.io/GVAI-Quick-Quiz/assets/social-thumbnail.jpg"
+  />
+  <meta
+    property="og:url"
+    content="https://self-defi.github.io/GVAI-Quick-Quiz/"
+  />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="GVAI Quick Quiz — Learning Hub" />
+  <meta
+    name="twitter:description"
+    content="Intro video, mind map, slides, and a short quiz for AI + digital infrastructure basics."
+  />
+  <meta
+    name="twitter:image"
+    content="https://self-defi.github.io/GVAI-Quick-Quiz/assets/social-thumbnail.jpg"
+  />
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <!-- Top Brand Bar -->
+  <header class="topbar">
+    <div class="brand">
+      <img
+        src="/GVAI-Quick-Quiz/assets/self-defi-logo.png"
+        alt="Self-Defi logo"
+        class="brand-logo"
+      />
+      <div class="brand-text">
+        <div class="brand-name">Self-Defi</div>
+        <div class="brand-tagline">Digital Infrastructure Architect</div>
+      </div>
+    </div>
+  </header>
+
+  <main class="page">
+    <!-- HERO -->
+    <section class="hero">
+      <h1>GVAI Quick Quiz</h1>
+      <p class="hero-subtitle">Watch • Learn • Test Yourself</p>
+    </section>
+
+    <!-- VIDEO -->
+    <section class="video-section">
+      <h2>Introduction Video</h2>
+
+      <div class="video-wrapper">
+        <video
+          controls
+          preload="metadata"
+          poster="/GVAI-Quick-Quiz/assets/video-poster.png"
+        >
+          <source
+            src="https://blue-magnetic-sole-156.mypinata.cloud/ipfs/bafybeiasyzqpqg3djmdqkwyz5env3ga5dalewrh4zoc4pfebjaihhz32xy"
+            type="video/mp4"
+          />
+          Your browser does not support the video tag.
+        </video>
+      </div>
+    </section>
+
+    <!-- RESOURCES -->
+    <section class="resources">
+      <h2>Explore Resources</h2>
+
+      <div class="button-row">
+        <a
+          class="button"
+          href="https://blue-magnetic-sole-156.mypinata.cloud/ipfs/bafybeie7x2ff4ojbmlo3u76gns3npbwvmbs3yrejgapu6okqln5bduyh7m"
+          target="_blank"
+          rel="noopener"
+        >
+          View Mind Map
+        </a>
+
+        <a
+          class="button"
+          href="https://blue-magnetic-sole-156.mypinata.cloud/ipfs/bafybeigfo3qeijpku7h64w4bzqes5vdihq4s3gfm26lrne2n5345rrvawe"
+          target="_blank"
+          rel="noopener"
+        >
+          View Presentation Slides
+        </a>
+
+        <!-- Scrolls user down to local quiz -->
+        <a class="button" href="#quiz">Quiz Yourself</a>
+      </div>
+    </section>
+
+    <!-- LOCAL, STATIC QUIZ (100% CLIENT-SIDE) -->
+    <section class="quiz-section" id="quiz">
+      <h2>Check Your Understanding</h2>
+      <p class="quiz-intro">
+        Answer a few quick questions based on what you learned from the video and slides.
+        Your responses are checked locally in your browser — nothing is sent anywhere.
+      </p>
+
+      <form id="quiz-form" class="quiz-form" novalidate>
+        <!-- Question 1 -->
+        <div class="quiz-question-block">
+          <p class="quiz-question">
+            1. What is the core purpose of GVAI (GraduationVaultsAI)?
+          </p>
+          <label class="quiz-option">
+            <input type="radio" name="q1" value="a" />
+            A) To speculate on AI-related tokens and chase short-term yield.
+          </label>
+          <label class="quiz-option">
+            <input type="radio" name="q1" value="b" />
+            B) To give school-age students a guided way to learn how AI and digital infrastructure work together.
+          </label>
+          <label class="quiz-option">
+            <input type="radio" name="q1" value="c" />
+            C) To replace teachers with fully automated AI agents.
+          </label>
+          <label class="quiz-option">
+            <input type="radio" name="q1" value="d" />
+            D) To run high-frequency trading strategies for the school.
+          </label>
+          <p class="quiz-feedback" id="q1-feedback"></p>
+        </div>
+
+        <!-- Question 2 -->
+        <div class="quiz-question-block">
+          <p class="quiz-question">
+            2. How is AI framed in the GVAI materials?
+          </p>
+          <label class="quiz-option">
+            <input type="radio" name="q2" value="a" />
+            A) As a full replacement for human decision-making in all areas.
+          </label>
+          <label class="quiz-option">
+            <input type="radio" name="q2" value="b" />
+            B) As a tool that can assist, explain, and organize information — with humans still in control.
+          </label>
+          <label class="quiz-option">
+            <input type="radio" name="q2" value="c" />
+            C) As a way to automatically move funds between student vaults.
+          </label>
+          <label class="quiz-option">
+            <input type="radio" name="q2" value="d" />
+            D) As something students should never use in school.
+          </label>
+          <p class="quiz-feedback" id="q2-feedback"></p>
+        </div>
+
+        <!-- Question 3 -->
+        <div class="quiz-question-block">
+          <p class="quiz-question">
+            3. Why is transparency important in systems like Graduation Vaults and GVAI?
+          </p>
+          <label class="quiz-option">
+            <input type="radio" name="q3" value="a" />
+            A) So only the school can see what’s happening.
+          </label>
+          <label class="quiz-option">
+            <input type="radio" name="q3" value="b" />
+            B) To make it easier to hide how decisions are made.
+          </label>
+          <label class="quiz-option">
+            <input type="radio" name="q3" value="c" />
+            C) So students, families, and partners can see how things work and build trust over time.
+          </label>
+          <label class="quiz-option">
+            <input type="radio" name="q3" value="d" />
+            D) It is not important as long as the tech is new and exciting.
+          </label>
+          <p class="quiz-feedback" id="q3-feedback"></p>
+        </div>
+
+        <!-- Question 4 -->
+        <div class="quiz-question-block">
+          <p class="quiz-question">
+            4. When students use AI tools in this context, which behavior is most aligned with the program?
+          </p>
+          <label class="quiz-option">
+            <input type="radio" name="q4" value="a" />
+            A) Copying full answers without reading or understanding them.
+          </label>
+          <label class="quiz-option">
+            <input type="radio" name="q4" value="b" />
+            B) Using AI to help summarize, plan, or break down complex ideas — then deciding what to keep.
+          </label>
+          <label class="quiz-option">
+            <input type="radio" name="q4" value="c" />
+            C) Letting AI make all personal, financial, and academic decisions.
+          </label>
+          <label class="quiz-option">
+            <input type="radio" name="q4" value="d" />
+            D) Sharing private passwords with AI apps to “make things easier.”
+          </label>
+          <p class="quiz-feedback" id="q4-feedback"></p>
+        </div>
+
+        <button type="button" class="button quiz-submit" id="quiz-submit">
+          Check Answers
+        </button>
+
+        <p class="quiz-score" id="quiz-score"></p>
+      </form>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    Powered by Self-Defi •
+    <a
+      href="https://GraduationVaults.com"
+      target="_blank"
+      rel="noopener"
+    >
+      Return to Main Site
+    </a>
+  </footer>
+
+  <!-- LOCAL QUIZ SCRIPT (no external dependencies) -->
+  <script>
+    (function () {
+      const quizData = [
+        {
+          name: "q1",
+          correct: "b",
+          feedbackCorrect: "Correct. GVAI is about guided learning using modern infrastructure, not speculation.",
+          feedbackIncorrect: "Not quite. The focus is on helping students understand AI and infrastructure, not trading or replacing humans."
+        },
+        {
+          name: "q2",
+          correct: "b",
+          feedbackCorrect: "Correct. AI is presented as a tool that helps humans work smarter while they stay in control.",
+          feedbackIncorrect: "Close, but the core idea is that humans remain in charge and use AI as support, not a replacement."
+        },
+        {
+          name: "q3",
+          correct: "c",
+          feedbackCorrect: "Exactly. Transparency builds trust for students, families, and partners looking at how the system works.",
+          feedbackIncorrect: "Remember: these systems are designed to be visible and trustworthy to everyone involved, not just insiders."
+        },
+        {
+          name: "q4",
+          correct: "b",
+          feedbackCorrect: "Right. Using AI to summarize and clarify — while the student decides what to keep — is the aligned behavior.",
+          feedbackIncorrect: "Think about AI as a smart assistant, not something that should replace thinking or handle sensitive data directly."
+        }
+      ];
+
+      const submitBtn = document.getElementById("quiz-submit");
+      const scoreEl = document.getElementById("quiz-score");
+
+      if (!submitBtn || !scoreEl) return;
+
+      submitBtn.addEventListener("click", function () {
+        let score = 0;
+        let total = quizData.length;
+
+        quizData.forEach((q) => {
+          const selected = document.querySelector(
+            'input[name="' + q.name + '"]:checked'
+          );
+          const feedbackEl = document.getElementById(q.name + "-feedback");
+
+          if (!feedbackEl) return;
+
+          if (!selected) {
+            feedbackEl.textContent = "No answer selected yet.";
+            feedbackEl.className = "quiz-feedback quiz-feedback-missing";
+            return;
+          }
+
+          if (selected.value === q.correct) {
+            score += 1;
+            feedbackEl.textContent = q.feedbackCorrect;
+            feedbackEl.className = "quiz-feedback quiz-feedback-correct";
+          } else {
+            feedbackEl.textContent = q.feedbackIncorrect;
+            feedbackEl.className = "quiz-feedback quiz-feedback-incorrect";
+          }
+        });
+
+        scoreEl.textContent = "You answered " + score + " out of " + total + " correctly.";
+      });
+    })();
+  </script>
+</body>
+</html>
