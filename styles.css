@@ -1,0 +1,299 @@
+/* ---------- Base reset ---------- */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  background-color: #faf6ef; /* clean cream */
+  color: #1a1a1a;
+}
+
+/* ---------- Top brand bar ---------- */
+.topbar {
+  background: #0f304d;
+  color: #ffffff;
+  padding: 8px 16px;
+}
+
+.brand {
+  max-width: 960px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 5px 0;
+}
+
+.brand-logo {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}
+
+.brand-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+
+.brand-name {
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+.brand-tagline {
+  font-size: 0.8rem;
+  opacity: 0.85;
+}
+
+/* ---------- Page container ---------- */
+.page {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+/* ---------- Hero section ---------- */
+.hero {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.hero h1 {
+  margin: 8px 0 4px;
+  font-size: 1.8rem;
+  color: #0f304d;
+}
+
+.hero-subtitle {
+  margin: 0;
+  font-size: 0.95rem;
+  color: #444444;
+}
+
+/* ---------- Video section ---------- */
+.video-section {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.video-section h2 {
+  margin-bottom: 10px;
+  color: #0f304d;
+}
+
+/* Wrapper that holds the video and black side bars */
+.video-wrapper {
+  max-width: 900px;
+  margin: 0 auto;
+  border-radius: 8px;
+  background: #000000; /* black bar background */
+}
+
+/* The actual video element */
+.video-wrapper video {
+  width: 100%;
+  max-width: 900px;
+  height: auto;
+  display: block;
+  border-radius: 8px;
+}
+
+/* ---------- Resources section ---------- */
+.resources {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.resources h2 {
+  margin-bottom: 16px;
+  color: #0f304d;
+}
+
+.button-row {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+
+.button {
+  display: inline-block;
+  min-width: 190px;
+  padding: 12px 20px;
+  background: #0f304d;
+  color: #ffffff;
+  text-decoration: none;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: background 0.2s, transform 0.1s, box-shadow 0.2s;
+  text-align: center;
+}
+
+.button:hover {
+  background: #082033;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+/* ---------- Quiz section ---------- */
+
+.quiz-section {
+  max-width: 960px;
+  margin: 0 auto 40px;
+  padding: 18px 14px 20px;
+  background-color: #fdf8f0;
+  border-radius: 12px;
+  border: 1px solid #e1d4bf;
+}
+
+.quiz-section h2 {
+  margin-top: 0;
+  margin-bottom: 6px;
+  font-size: 1.4rem;
+  color: #0f304d;
+  text-align: left;
+}
+
+.quiz-intro {
+  margin: 0 0 14px;
+  font-size: 0.95rem;
+  color: #444444;
+}
+
+.quiz-form {
+  margin-top: 8px;
+}
+
+.quiz-question-block {
+  margin-bottom: 18px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #e3d8c5;
+}
+
+.quiz-question-block:last-of-type {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.quiz-question {
+  margin: 0 0 6px;
+  font-weight: 600;
+  color: #152237;
+}
+
+.quiz-option {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 0.9rem;
+  color: #2c2c2c;
+  cursor: pointer;
+}
+
+.quiz-option input[type="radio"] {
+  margin-right: 6px;
+}
+
+.quiz-feedback {
+  margin: 4px 0 0;
+  font-size: 0.85rem;
+}
+
+.quiz-feedback-correct {
+  color: #166534; /* green */
+  font-weight: 600;
+}
+
+.quiz-feedback-incorrect {
+  color: #b91c1c; /* red */
+}
+
+.quiz-feedback-missing {
+  color: #92400e; /* amber/brown */
+}
+
+.quiz-submit {
+  margin-top: 8px;
+}
+
+.quiz-score {
+  margin-top: 10px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #0f304d;
+}
+
+/* ---------- Footer ---------- */
+footer {
+  text-align: center;
+  padding: 14px 10px 18px;
+  font-size: 0.8rem;
+  color: #666666;
+  background-color: #faf6ef;
+}
+
+footer a {
+  color: #0f304d;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+footer a:hover {
+  text-decoration: underline;
+}
+
+/* ---------- Responsive tweaks ---------- */
+
+/* Tablets and down */
+@media (max-width: 900px) {
+  .hero h1 {
+    font-size: 1.6rem;
+  }
+
+  .page {
+    padding: 12px;
+  }
+}
+
+/* Phones */
+@media (max-width: 600px) {
+  .brand {
+    justify-content: center;
+  }
+
+  .brand-logo {
+    width: 32px;
+    height: 32px;
+  }
+
+  .brand-name {
+    font-size: 0.9rem;
+  }
+
+  .brand-tagline {
+    font-size: 0.75rem;
+  }
+
+  .hero h1 {
+    font-size: 1.35rem;
+  }
+
+  .button-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .button {
+    width: 100%;
+    max-width: 320px;
+    margin: 4px auto;
+  }
+
+  .quiz-section {
+    padding: 16px 12px 18px;
+  }
+}
