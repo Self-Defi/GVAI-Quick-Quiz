@@ -1,382 +1,407 @@
-// quiz.js — GVAI Quick Quiz (20 questions, explanations included)
+// quiz.js
+// GVAI Quick Quiz — fully client-side, no external dependencies.
 
-// -------------------- QUESTION BANK -------------------- //
-
+// Question bank
 const questions = [
   {
     id: 1,
-    text: "What is the primary purpose of GraduationVaultsAI?",
-    options: [
-      "Generate investment returns for the school",
-      "Provide transparent, student-linked savings vaults",
-      "Replace teachers with automation",
-      "Track school attendance"
-    ],
-    correctIndex: 1,
+    question: "What is the core purpose of GVAI (GraduationVaultsAI)?",
+    options: {
+      A: "To speculate on AI-related tokens and chase short-term yield.",
+      B: "To give school-age students a guided way to learn how AI and digital infrastructure work together.",
+      C: "To replace teachers with fully automated AI agents.",
+      D: "To run high-frequency trading strategies for the school."
+    },
+    correct: "B",
     explanation:
-      "GraduationVaultsAI is built to create transparent, student-linked vaults so everyone can see how funds are growing for each learner."
+      "GVAI is framed as an educational bridge — helping students understand how AI and digital infrastructure work together, not as a trading or speculation product."
   },
   {
     id: 2,
-    text: "What does the phrase “Unlock Tomorrow. Today.” refer to?",
-    options: [
-      "Finishing high school early",
-      "Students accessing their vault funds immediately",
-      "Preparing students with digital tools and transparent savings",
-      "A secret feature in NotebookLM"
-    ],
-    correctIndex: 2,
+    question: "How is AI framed in the GVAI materials?",
+    options: {
+      A: "As a full replacement for human decision-making in all areas.",
+      B: "As a tool that can assist, explain, and organize information — with humans still in control.",
+      C: "As a way to automatically move funds between student vaults.",
+      D: "As something students should never use in school."
+    },
+    correct: "B",
     explanation:
-      "The tagline is about giving students future-focused advantages now: transparent savings plus modern AI and digital tools."
+      "AI is consistently framed as an assistant and explainer. Humans — students, staff, and families — stay in control of decisions."
   },
   {
     id: 3,
-    text: "What role does Self-Defi play in the GraduationVaultsAI ecosystem?",
-    options: [
-      "Holds custody of all student funds",
-      "Designs decentralized infrastructure but never holds keys",
-      "Acts as a traditional bank",
-      "Chooses which students receive money"
-    ],
-    correctIndex: 1,
+    question:
+      "Why is transparency important in systems like Graduation Vaults and GVAI?",
+    options: {
+      A: "So only the school can see what’s happening.",
+      B: "To make it easier to hide how decisions are made.",
+      C: "So students, families, and partners can see how things work and build trust over time.",
+      D: "It’s not important as long as the tech is new and exciting."
+    },
+    correct: "C",
     explanation:
-      "Self-Defi is the infrastructure architect. It helps design the vault system but never controls or holds private keys."
+      "The whole vault model leans on transparency so everyone can see how things work, which builds long-term trust."
   },
   {
     id: 4,
-    text: "What security model is used for managing vault control?",
-    options: [
-      "Single-password login",
-      "School-only approval",
-      "Multi-sig authorization",
-      "Facial recognition"
-    ],
-    correctIndex: 2,
+    question:
+      "When students use AI tools in this context, which behavior is most aligned with the program?",
+    options: {
+      A: "Copying full answers without reading or understanding them.",
+      B: "Using AI to help summarize, plan, or break down complex ideas — then deciding what to keep.",
+      C: "Letting AI make all personal, financial, and academic decisions.",
+      D: "Sharing private passwords with AI apps to make things easier."
+    },
+    correct: "B",
     explanation:
-      "GraduationVaultsAI uses multi-signature (multi-sig) approval so no single person can move funds alone."
+      "Students are encouraged to use AI as a thinking aid — to clarify and structure ideas — not as a shortcut that replaces understanding."
   },
   {
     id: 5,
-    text: "Why is it important that no single person can move funds from a vault?",
-    options: [
-      "To comply with random banking rules",
-      "To prevent any login from expiring",
-      "To ensure shared accountability and youth safety",
-      "To make transactions slower on purpose"
-    ],
-    correctIndex: 2,
+    question:
+      "In the GVAI framing, what is the relationship between AI and human signers on a vault?",
+    options: {
+      A: "AI is one of the formal signers that approves on-chain transactions.",
+      B: "AI can override human signers if it detects a better decision.",
+      C: "AI can suggest, explain, or model options, but human signers still approve decisions.",
+      D: "There are no human signers once AI is turned on."
+    },
+    correct: "C",
     explanation:
-      "Shared approvals protect students, reduce misuse risk, and keep everyone accountable for how funds move."
+      "Vault signers remain human. AI can prepare information or options, but multi-sig approvals stay in human hands."
   },
   {
     id: 6,
-    text: "Why are student vault balances hidden on public dashboards?",
-    options: [
-      "Because students never see their balances",
-      "Youth safety and privacy",
-      "The system cannot show balances correctly",
-      "Schools asked to hide all numbers"
-    ],
-    correctIndex: 1,
+    question:
+      "Why does the program emphasize local, school-aligned AI guidance instead of random online advice?",
+    options: {
+      A: "Because online AI tools never work.",
+      B: "To keep explanations consistent with the school’s policies, values, and safety expectations.",
+      C: "To prevent students from using any outside resources.",
+      D: "Because local tools are always smarter than global ones."
+    },
+    correct: "B",
     explanation:
-      "Public dashboards show transparency without exposing individual student balances, protecting student privacy and safety."
+      "Local, curated AI guidance helps keep answers aligned with school rules and expectations while still being flexible and helpful."
   },
   {
     id: 7,
-    text: "What does “Zero Custody by SD Advisory Group” mean?",
-    options: [
-      "The vaults are stored offline with SD Advisors",
-      "Only SD Advisors can move funds",
-      "SD Advisors never control or possess any private keys",
-      "All vaults reset at the end of the year"
-    ],
-    correctIndex: 2,
+    question:
+      "Which best describes how students should handle personal or sensitive information when using AI?",
+    options: {
+      A: "Type in full names, passwords, and account details so AI can personalize advice.",
+      B: "Share screenshots of all financial and family documents.",
+      C: "Avoid sharing private details and focus on general questions or examples.",
+      D: "Let AI decide what is safe to share."
+    },
+    correct: "C",
     explanation:
-      "Zero custody means SD Advisors design the system but never have keys or direct control over funds."
+      "Students should avoid putting sensitive data into AI tools and instead use generalized examples or non-identifying details."
   },
   {
     id: 8,
-    text: "What is the benefit of linking vaults to students personally instead of one shared school pool?",
-    options: [
-      "Creates extra work with no upside",
-      "Reduces transparency on how funds are used",
-      "Builds real-world financial literacy and ownership mindset",
-      "Hides all transactions from donors"
-    ],
-    correctIndex: 2,
+    question:
+      "What is one educational goal of combining Graduation Vaults with AI explainers?",
+    options: {
+      A: "To teach students how to bypass school rules.",
+      B: "To help students connect technical tools (vaults, multi-sig, records) with real-life financial and career planning.",
+      C: "To keep families out of the loop.",
+      D: "To automate grades and attendance."
+    },
+    correct: "B",
     explanation:
-      "Student-linked vaults let learners see progress and build an ownership mindset about their future resources."
+      "By seeing how vaults and AI can work together, students connect technology with real-world planning and long-term thinking."
   },
   {
     id: 9,
-    text: "Which AI tool is especially good for research with citations?",
-    options: ["ChatGPT", "Canva", "Perplexity", "Replit"],
-    correctIndex: 2,
+    question:
+      "If a student is unsure whether an AI-generated answer is correct, what is the recommended next step?",
+    options: {
+      A: "Accept it anyway — AI is always right.",
+      B: "Ignore it and never use AI again.",
+      C: "Cross-check with trusted sources such as teachers, official materials, or multiple references.",
+      D: "Ask a friend to copy their answer."
+    },
+    correct: "C",
     explanation:
-      "Perplexity is optimized for research-style answers and includes sources so students can verify information."
+      "AI responses should be checked against trusted humans and official resources, especially for important or high-impact decisions."
   },
   {
     id: 10,
-    text: "Which tool lets a student upload class notes or PDFs and ask questions directly against them?",
-    options: ["NotebookLM", "Mindgrasp", "StudyFetch", "Replit AI"],
-    correctIndex: 0,
+    question:
+      "Why does the program highlight the difference between 'crypto speculation' and 'infrastructure building'?",
+    options: {
+      A: "Because speculation is the main focus.",
+      B: "To make it clear that the work is about long-term systems, not gambling on price swings.",
+      C: "To discourage any financial learning.",
+      D: "To promote meme tokens."
+    },
+    correct: "B",
     explanation:
-      "NotebookLM is built to work against a specific set of documents so students can ask targeted questions about their materials."
+      "The emphasis is on building durable systems — vaults, dashboards, and processes — not on trading or speculation."
   },
   {
     id: 11,
-    text: "According to the GVAI materials, which combination of tools builds research and technical mindsets?",
-    options: [
-      "Canva, Google Docs, YouTube, Instagram, Excel",
-      "ChatGPT, Perplexity, NotebookLM, Canva AI, Replit AI",
-      "Snapchat, TikTok, Adobe, Sheets, Slides",
-      "Only ChatGPT"
-    ],
-    correctIndex: 1,
+    question:
+      "When experimenting with AI tools, what kind of questions are most encouraged for students?",
+    options: {
+      A: "Questions that help them understand concepts, processes, and options.",
+      B: "Questions that trick AI or try to bypass filters.",
+      C: "Questions asking AI to do their homework word-for-word.",
+      D: "Questions about other students’ private information."
+    },
+    correct: "A",
     explanation:
-      "The starter stack combines large language models, research tools, document-grounded AI, creative tools, and coding tools."
+      "Students are encouraged to use AI to deepen understanding — asking 'how' and 'why' questions, not to sidestep their own work."
   },
   {
     id: 12,
-    text: "What does “Prompt Discipline” mean in the context of AI tools?",
-    options: [
-      "Keeping prompts as short as possible",
-      "Asking the AI to behave like an expert with clear instructions",
-      "Limiting how often AI is used in class",
-      "Turning in prompts for a grade"
-    ],
-    correctIndex: 1,
+    question:
+      "How does AI support staff and leadership in the Graduation Vaults / GVAI ecosystem?",
+    options: {
+      A: "By secretly changing vault balances.",
+      B: "By generating clear summaries, drafts, and checklists based on the school’s own materials.",
+      C: "By replacing all staff meetings.",
+      D: "By controlling which families are allowed to participate."
+    },
+    correct: "B",
     explanation:
-      "Prompt discipline is about giving clear roles and context so the AI responds with expert-level, useful output."
+      "AI can help staff turn school documents and plans into clearer summaries, drafts, and checklists — speeding up communication, not replacing people."
   },
-
-  // -------------------- Additional 8 Questions -------------------- //
-
+  // Extra 8 questions to reach 20
   {
     id: 13,
-    text: "What is the main benefit of running the GVAI Quick Quiz fully client-side?",
-    options: [
-      "It uses the school’s database for tracking",
-      "It requires a constant internet connection to a remote server",
-      "No student data leaves the browser",
-      "It lets advertisers track students"
-    ],
-    correctIndex: 2,
+    question:
+      "What is one benefit of keeping the quiz 100% client-side (local in the browser)?",
+    options: {
+      A: "It makes the quiz slower.",
+      B: "It sends results to a central AI model for grading.",
+      C: "It keeps responses private; nothing is uploaded or stored on a server.",
+      D: "It prevents the quiz from working offline."
+    },
+    correct: "C",
     explanation:
-      "Client-side quizzes keep all responses local to the user’s device, protecting privacy and removing dependence on external servers."
+      "Running the quiz entirely client-side means answers live only in the student’s browser session — nothing is sent to a backend."
   },
   {
     id: 14,
-    text: "When using AI tools for schoolwork, what is the BEST next step after getting an answer?",
-    options: [
-      "Submit the AI answer without reading it",
-      "Double-check facts and rewrite in your own words",
-      "Copy/paste into multiple assignments",
-      "Ask AI to shorten it and still turn it in as-is"
-    ],
-    correctIndex: 1,
+    question:
+      "In the GVAI framing, what is a healthy mindset toward AI mistakes or hallucinations?",
+    options: {
+      A: "Assume they never happen.",
+      B: "Use mistakes as a chance to double-check sources and improve questions.",
+      C: "Blame the nearest person.",
+      D: "Ignore them and keep copying outputs."
+    },
+    correct: "B",
     explanation:
-      "Students should verify information and express it in their own voice to build understanding and avoid plagiarism."
+      "Mistakes are expected. The right move is to verify information, refine prompts, and treat AI as a fallible assistant."
   },
   {
     id: 15,
-    text: "Which of these is a responsible way to use AI in academic projects?",
-    options: [
-      "Asking AI to generate fake sources",
-      "Using AI to outline your ideas and then adding your own research",
-      "Letting AI pick your opinion for you",
-      "Using AI to impersonate another student"
-    ],
-    correctIndex: 1,
+    question:
+      "Why is it useful to have a mind map alongside slides and video in the GVAI hub?",
+    options: {
+      A: "Mind maps look impressive but don’t help learning.",
+      B: "They give a visual overview of how topics connect, which helps students see the bigger picture.",
+      C: "They replace the need for any other resources.",
+      D: "They are required to unlock the quiz."
+    },
+    correct: "B",
     explanation:
-      "AI is strongest as a planning and support tool. Students should still research, think, and write for themselves."
+      "Mind maps show relationships between ideas, helping students see how AI, vaults, transparency, and governance connect."
   },
   {
     id: 16,
-    text: "Why does GraduationVaultsAI emphasize clear, transparent dashboards?",
-    options: [
-      "To replace teachers with graphs",
-      "So students and families can see how funds are building over time",
-      "To confuse people with too many numbers",
-      "To hide how vaults are structured"
-    ],
-    correctIndex: 1,
+    question:
+      "What’s the recommended way for students to use AI when planning long-term goals (like graduation or career steps)?",
+    options: {
+      A: "Ask AI to predict their entire future.",
+      B: "Use AI to outline options, timelines, and questions to discuss with trusted adults.",
+      C: "Let AI choose schools and jobs without human input.",
+      D: "Avoid any planning; just focus on short-term tasks."
+    },
+    correct: "B",
     explanation:
-      "Transparent dashboards give students, families, and donors a shared, honest view of progress in each vault."
+      "AI can help students map options and timelines, but decisions should be reviewed with trusted adults and aligned with real-world constraints."
   },
   {
     id: 17,
-    text: "If a student wants to explore coding or technical tinkering with AI, which tool from the stack is best?",
-    options: ["Perplexity", "NotebookLM", "Replit AI", "Canva AI"],
-    correctIndex: 2,
+    question:
+      "How does the concept of 'Unlock Tomorrow. Today.' connect to GVAI?",
+    options: {
+      A: "It promises instant wealth.",
+      B: "It means students skip learning and jump straight to results.",
+      C: "It reflects using today’s tools (vaults + AI) to prepare for long-term opportunities.",
+      D: "It only refers to graduation day itself."
+    },
+    correct: "C",
     explanation:
-      "Replit AI is built around code, allowing students to experiment with scripts and learn technical problem solving."
+      "The slogan is about using current tools and habits to build future options — financial, educational, and career-related."
   },
   {
     id: 18,
-    text: "Why is it important that SD Advisory Group does not store or manage private keys for the school?",
-    options: [
-      "So SD Advisors can log in faster",
-      "To keep the system legally classified as a bank",
-      "To align with self-custody and avoid single points of failure",
-      "So students never have to think about security"
-    ],
-    correctIndex: 2,
+    question:
+      "Which of the following best reflects responsible AI collaboration in the GVAI context?",
+    options: {
+      A: "Treating AI as a teammate that offers drafts and ideas, while humans make the final call.",
+      B: "Treating AI as the boss that decides everything.",
+      C: "Never questioning anything AI outputs.",
+      D: "Using AI only for entertainment."
+    },
+    correct: "A",
     explanation:
-      "Self-custody means the school and trustees own their own keys, eliminating SD Advisory as a central point of control or risk."
+      "Responsible use means collaborating with AI: letting it propose ideas while humans remain accountable for decisions."
   },
   {
     id: 19,
-    text: "What is a smart way for students to use AI when preparing for an exam?",
-    options: [
-      "Ask AI for a fake answer key",
-      "Have AI generate practice questions based on their notes",
-      "Ask AI to take the exam for them",
-      "Use AI only to translate answers into slang"
-    ],
-    correctIndex: 1,
+    question:
+      "What is one reason schools might prefer a curated AI experience instead of sending students directly to random public chatbots?",
+    options: {
+      A: "To completely block AI access.",
+      B: "To align prompts, guardrails, and examples with school safety and learning goals.",
+      C: "Because public tools cannot answer any questions.",
+      D: "So students cannot learn how to prompt on their own."
+    },
+    correct: "B",
     explanation:
-      "Letting AI generate practice questions from real notes turns the tool into a study coach instead of a shortcut."
+      "A curated experience lets schools shape how AI is used: safer prompts, aligned sources, and clearer expectations."
   },
   {
     id: 20,
-    text: "What attitude toward AI does GraduationVaultsAI encourage?",
-    options: [
-      "AI as a cheat code to avoid learning",
-      "AI as a replacement for teachers and mentors",
-      "AI as a tool that amplifies disciplined students and clear systems",
-      "AI as pure entertainment only"
-    ],
-    correctIndex: 2,
+    question:
+      "After finishing the GVAI Quick Quiz, what is a powerful next step for a student?",
+    options: {
+      A: "Forget everything and move on.",
+      B: "Share their score on social media with personal details.",
+      C: "Note any confusing topics and bring them to a teacher, mentor, or family conversation.",
+      D: "Keep retaking the quiz until they memorize the letters."
+    },
+    correct: "C",
     explanation:
-      "AI is framed as an amplifier: it makes disciplined systems and focused students more powerful, not a replacement for human effort."
+      "The quiz is a checkpoint. The most valuable next move is turning confusion into real questions for trusted humans."
   }
 ];
 
-// -------------------- QUIZ STATE -------------------- //
+// --------- Render quiz ---------
+function renderQuiz() {
+  const form = document.getElementById("quiz-form");
+  if (!form) return;
 
-let currentIndex = 0;
-let score = 0;
-let hasAnswered = false;
+  form.innerHTML = "";
 
-// -------------------- DOM REFERENCES -------------------- //
+  questions.forEach((q, index) => {
+    const questionNumber = index + 1;
 
-const questionTextEl = document.getElementById("question-text");
-const choicesContainerEl = document.getElementById("choices-container");
-const progressTextEl = document.getElementById("progress-text");
-const scoreTextEl = document.getElementById("score-text");
-const feedbackEl = document.getElementById("feedback");
-const nextBtnEl = document.getElementById("next-btn");
+    const questionDiv = document.createElement("div");
+    questionDiv.className = "quiz-question";
+    questionDiv.dataset.questionId = q.id;
 
-// -------------------- RENDER FUNCTIONS -------------------- //
+    const heading = document.createElement("h3");
+    heading.textContent = `${questionNumber}. ${q.question}`;
+    questionDiv.appendChild(heading);
 
-function renderQuestion() {
-  const q = questions[currentIndex];
-  hasAnswered = false;
-  feedbackEl.textContent = "";
-  feedbackEl.className = "feedback";
+    const optionsList = document.createElement("ul");
+    optionsList.className = "quiz-options";
 
-  // Progress text
-  progressTextEl.textContent = `Question ${currentIndex + 1} of ${questions.length}`;
-  scoreTextEl.textContent = `Score: ${score} / ${questions.length}`;
+    Object.entries(q.options).forEach(([key, text]) => {
+      const li = document.createElement("li");
 
-  // Question
-  questionTextEl.textContent = q.text;
+      const label = document.createElement("label");
+      label.className = "quiz-option-label";
 
-  // Choices
-  choicesContainerEl.innerHTML = "";
-  q.options.forEach((opt, idx) => {
-    const btn = document.createElement("button");
-    btn.className = "choice-btn";
-    btn.textContent = opt;
-    btn.type = "button";
-    btn.addEventListener("click", () => handleChoice(idx, btn));
-    choicesContainerEl.appendChild(btn);
+      const input = document.createElement("input");
+      input.type = "radio";
+      input.name = `q${q.id}`;
+      input.value = key;
+
+      const span = document.createElement("span");
+      span.textContent = `${key}) ${text}`;
+
+      label.appendChild(input);
+      label.appendChild(span);
+      li.appendChild(label);
+      optionsList.appendChild(li);
+    });
+
+    const feedback = document.createElement("div");
+    feedback.className = "quiz-feedback";
+    feedback.id = `feedback-q${q.id}`;
+    feedback.setAttribute("aria-live", "polite");
+
+    questionDiv.appendChild(optionsList);
+    questionDiv.appendChild(feedback);
+
+    form.appendChild(questionDiv);
   });
-
-  // Next button state
-  nextBtnEl.disabled = true;
-  nextBtnEl.textContent =
-    currentIndex === questions.length - 1 ? "View Results" : "Next Question";
 }
 
-function handleChoice(selectedIndex, selectedBtn) {
-  if (hasAnswered) return;
-  hasAnswered = true;
+// --------- Grading logic ---------
+function gradeQuiz() {
+  let correctCount = 0;
 
-  const q = questions[currentIndex];
+  questions.forEach((q) => {
+    const selected = document.querySelector(
+      `input[name="q${q.id}"]:checked`
+    );
 
-  // Mark correct / incorrect
-  const choiceButtons = choicesContainerEl.querySelectorAll(".choice-btn");
-  choiceButtons.forEach((btn, idx) => {
-    btn.disabled = true;
+    const feedbackEl = document.getElementById(`feedback-q${q.id}`);
+    if (!feedbackEl) return;
 
-    if (idx === q.correctIndex) {
-      btn.classList.add("correct");
+    if (!selected) {
+      feedbackEl.textContent = "No answer selected yet.";
+      feedbackEl.className = "quiz-feedback neutral";
+      return;
     }
 
-    if (idx === selectedIndex && idx !== q.correctIndex) {
-      btn.classList.add("incorrect");
+    if (selected.value === q.correct) {
+      correctCount++;
+      feedbackEl.textContent = `✅ Correct. ${q.explanation}`;
+      feedbackEl.className = "quiz-feedback correct";
+    } else {
+      feedbackEl.textContent = `❌ Not quite. Correct answer: ${q.correct}). ${q.explanation}`;
+      feedbackEl.className = "quiz-feedback incorrect";
     }
   });
 
-  // Update score + feedback
-  const isCorrect = selectedIndex === q.correctIndex;
-  if (isCorrect) {
-    score++;
-    feedbackEl.textContent = "Correct. " + q.explanation;
-    feedbackEl.classList.add("feedback-correct");
-  } else {
-    feedbackEl.textContent = "Not quite. " + q.explanation;
-    feedbackEl.classList.add("feedback-incorrect");
-  }
-
-  scoreTextEl.textContent = `Score: ${score} / ${questions.length}`;
-  nextBtnEl.disabled = false;
-}
-
-// -------------------- NAVIGATION -------------------- //
-
-function showResults() {
-  questionTextEl.textContent = "Quiz Complete";
-  choicesContainerEl.innerHTML = "";
-  feedbackEl.className = "feedback feedback-summary";
-  feedbackEl.textContent =
-    `You scored ${score} out of ${questions.length}. ` +
-    (score === questions.length
-      ? "Perfect! You’ve locked in the GraduationVaultsAI concepts."
-      : score >= Math.round(questions.length * 0.7)
-      ? "Strong work. You have a solid grasp of the material."
-      : "Good start. Review the video and slides, then try again.");
-
-  progressTextEl.textContent = "Great work.";
-  nextBtnEl.textContent = "Restart Quiz";
-  nextBtnEl.disabled = false;
-}
-
-function handleNext() {
-  // If we're at the end and user hits "Restart Quiz"
-  if (currentIndex === questions.length) {
-    currentIndex = 0;
-    score = 0;
-    renderQuestion();
-    return;
-  }
-
-  // Move to next question OR results
-  if (currentIndex < questions.length - 1) {
-    currentIndex++;
-    renderQuestion();
-  } else {
-    currentIndex = questions.length; // lock state
-    showResults();
+  const summary = document.getElementById("quiz-summary");
+  if (summary) {
+    summary.hidden = false;
+    summary.textContent = `You answered ${correctCount} out of ${questions.length} correctly.`;
   }
 }
 
-// -------------------- EVENT HOOKUP -------------------- //
+function resetQuiz() {
+  const form = document.getElementById("quiz-form");
+  if (form) {
+    form.reset();
+  }
+  document
+    .querySelectorAll(".quiz-feedback")
+    .forEach((el) => {
+      el.textContent = "";
+      el.className = "quiz-feedback";
+    });
+  const summary = document.getElementById("quiz-summary");
+  if (summary) {
+    summary.hidden = true;
+    summary.textContent = "";
+  }
+}
 
-nextBtnEl.addEventListener("click", handleNext);
+// --------- Wire up events ---------
+document.addEventListener("DOMContentLoaded", () => {
+  renderQuiz();
 
-// -------------------- INITIAL RENDER -------------------- //
+  const checkBtn = document.getElementById("check-answers");
+  const resetBtn = document.getElementById("reset-quiz");
 
-renderQuestion();
+  if (checkBtn) {
+    checkBtn.addEventListener("click", gradeQuiz);
+  }
+  if (resetBtn) {
+    resetBtn.addEventListener("click", resetQuiz);
+  }
+});
+
