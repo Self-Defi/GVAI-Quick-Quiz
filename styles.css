@@ -618,3 +618,41 @@ html[data-theme="dark"] option {
 html[data-theme="dark"] .consult-btn {
   color: #ffffff;
 }
+
+/* ---------- Collapsible sections (Tools + Quiz) ---------- */
+.collapsible[hidden] {
+  display: none !important;
+}
+
+.section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 6px;
+}
+
+.section-close {
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,0.06);
+  color: var(--text);
+  border-radius: 999px;
+  padding: 8px 10px;
+  cursor: pointer;
+  font-weight: 900;
+}
+
+.section-close:hover {
+  box-shadow: 0 6px 14px var(--shadow);
+}
+
+/* Make button elements look like your .button links */
+button.button {
+  border: none;
+  cursor: pointer;
+}
+
+/* Prevent iOS zoom weirdness on selects */
+select {
+  font-size: 16px;
+}
