@@ -3,147 +3,153 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
   <title>GVAI Quick Quiz — Learning Hub</title>
 
-  <meta
-    name="description"
-    content="GVAI Quick Quiz — a lightweight Self-Defi learning hub with an intro video, resources, and a guided AI quiz."
-  />
+  <meta name="description" content="GVAI Quick Quiz — Self-Defi learning hub with video, curated academic tools, and a guided quiz." />
 
-  <!-- Favicon -->
-  <link
-    rel="icon"
-    type="image/png"
-    href="/GVAI-Quick-Quiz/assets/self-defi-logo.png"
-  />
-
-  <!-- Open Graph -->
-  <meta property="og:type" content="website" />
-  <meta property="og:title" content="GVAI Quick Quiz — Learning Hub" />
-  <meta property="og:description" content="Intro video, curated tools, and a guided quiz for AI + digital infrastructure basics." />
-  <meta property="og:image" content="https://self-defi.github.io/GVAI-Quick-Quiz/assets/social-thumbnail.jpg" />
-  <meta property="og:url" content="https://self-defi.github.io/GVAI-Quick-Quiz/" />
-
-  <!-- Styles -->
+  <link rel="icon" type="image/png" href="/GVAI-Quick-Quiz/assets/self-defi-logo.png" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 
 <body>
-  <!-- Top Brand Bar -->
-  <header class="topbar">
-    <div class="brand">
-      <img
-        src="/GVAI-Quick-Quiz/assets/self-defi-logo.png"
-        alt="Self-Defi logo"
-        class="brand-logo"
-      />
-      <div class="brand-text">
-        <div class="brand-name">Self-Defi</div>
-        <div class="brand-tagline">Digital Infrastructure Architect</div>
+<header class="topbar">
+  <div class="brand">
+    <img src="/GVAI-Quick-Quiz/assets/self-defi-logo.png" class="brand-logo" />
+    <div class="brand-text">
+      <div class="brand-name">Self-Defi</div>
+      <div class="brand-tagline">Digital Infrastructure Architect</div>
+    </div>
+  </div>
+
+  <div class="topbar-actions">
+    <a href="https://cal.com/selfdeficonsultant/15min" target="_blank" class="consult-btn">
+      Book Consultation
+    </a>
+    <button id="theme-toggle" class="icon-btn" title="Toggle dark mode">🌓</button>
+  </div>
+</header>
+
+<main class="page">
+  <!-- HERO -->
+  <section class="hero">
+    <h1>GVAI Quick Quiz</h1>
+    <p class="hero-subtitle">Watch • Learn • Test Yourself</p>
+  </section>
+
+  <!-- VIDEO -->
+  <section class="video-section">
+    <h2>Introduction Video</h2>
+    <div class="video-wrapper">
+      <video controls preload="metadata" poster="/GVAI-Quick-Quiz/assets/video-poster.png">
+        <source src="https://blue-magnetic-sole-156.mypinata.cloud/ipfs/bafybeiasyzqpqg3djmdqkwyz5env3ga5dalewrh4zoc4pfebjaihhz32xy" type="video/mp4" />
+      </video>
+    </div>
+  </section>
+
+  <!-- RESOURCES -->
+  <section class="resources">
+    <h2>Explore Resources</h2>
+    <div class="button-row">
+      <a class="button" href="./assets/gvai-quick-quiz-slides.pdf" target="_blank">View Presentation Slides</a>
+      <a class="button" href="#tools">Resourceful Tools</a>
+      <a class="button" href="#quiz">Quiz Yourself</a>
+    </div>
+  </section>
+
+  <!-- RESOURCEFUL TOOLS -->
+  <section class="tools" id="tools">
+    <h2>Resourceful Tools</h2>
+    <p class="tools-intro">Approved AI tools for academic learning and research support.</p>
+
+    <div class="tools-grid">
+      <div class="tool-card">
+        <h3>ChatGPT</h3>
+        <p class="tool-use">Concept clarification, outlining, summarization.</p>
+        <a class="tool-link" href="https://chat.openai.com" target="_blank">Official Site</a>
+      </div>
+
+      <div class="tool-card">
+        <h3>Perplexity AI</h3>
+        <p class="tool-use">Research search with citations.</p>
+        <a class="tool-link" href="https://www.perplexity.ai" target="_blank">Official Site</a>
+      </div>
+
+      <div class="tool-card">
+        <h3>NotebookLM</h3>
+        <p class="tool-use">Study assistant using your own documents.</p>
+        <a class="tool-link" href="https://notebooklm.google" target="_blank">Official Site</a>
+      </div>
+
+      <div class="tool-card">
+        <h3>Khan Academy AI</h3>
+        <p class="tool-use">Guided tutoring aligned with academics.</p>
+        <a class="tool-link" href="https://www.khanacademy.org/khan-labs" target="_blank">Official Site</a>
+      </div>
+
+      <div class="tool-card">
+        <h3>Wolfram Alpha</h3>
+        <p class="tool-use">Math & science problem solving.</p>
+        <a class="tool-link" href="https://www.wolframalpha.com" target="_blank">Official Site</a>
       </div>
     </div>
+  </section>
 
-    <div class="topbar-actions">
-      <a
-        href="https://cal.com/selfdeficonsultant/15min"
-        target="_blank"
-        rel="noopener"
-        class="consult-btn"
-      >
-        Book Consultation
-      </a>
+  <!-- QUIZ -->
+  <section class="quiz-section" id="quiz">
+    <div class="quiz-card">
+      <div class="quiz-header">
+        <div>
+          <h2>Check Your Understanding</h2>
+          <p class="quiz-intro">This quiz runs locally. Nothing is uploaded or tracked.</p>
+        </div>
 
-      <button
-        type="button"
-        id="theme-toggle"
-        class="icon-btn"
-        aria-label="Toggle dark mode"
-        title="Toggle dark mode"
-      >
-        🌓
-      </button>
+        <div class="quiz-controls">
+          <label class="select-wrap">
+            <span class="select-label">Quiz size</span>
+            <select id="quiz-size">
+              <option value="20">20</option>
+              <option value="30">30</option>
+              <option value="40">40</option>
+            </select>
+          </label>
+
+          <button id="new-quiz" class="secondary small">New Quiz</button>
+        </div>
+      </div>
+
+      <!-- PROGRESS -->
+      <div class="progress-row">
+        <div class="progress-meta">
+          <span id="progress-text">Progress: 0 / 0</span>
+          <span id="progress-percent">0%</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" id="progress-fill"></div>
+        </div>
+      </div>
+
+      <!-- QUESTIONS -->
+      <form id="quiz-form"></form>
+
+      <!-- ACTIONS -->
+      <div class="quiz-actions">
+        <button id="check-answers" class="primary">Check Answers</button>
+        <button id="download-results" class="secondary">Download PDF Results</button>
+        <button id="reset-quiz" class="secondary">Reset Quiz</button>
+      </div>
+
+      <div id="quiz-summary" class="quiz-summary" hidden></div>
     </div>
-  </header>
+  </section>
 
-  <main class="page">
-    <!-- HERO -->
-    <section class="hero">
-      <h1>GVAI Quick Quiz</h1>
-      <p class="hero-subtitle">Watch • Learn • Test Yourself</p>
-    </section>
+  <footer>
+    Powered by Self-Defi •
+    <a href="https://GraduationVaults.com" target="_blank">Return to Main Site</a>
+  </footer>
+</main>
 
-    <!-- VIDEO -->
-    <section class="video-section">
-      <h2>Introduction Video</h2>
-      <div class="video-wrapper">
-        <video controls preload="metadata" poster="/GVAI-Quick-Quiz/assets/video-poster.png">
-          <source
-            src="https://blue-magnetic-sole-156.mypinata.cloud/ipfs/bafybeiasyzqpqg3djmdqkwyz5env3ga5dalewrh4zoc4pfebjaihhz32xy"
-            type="video/mp4"
-          />
-        </video>
-      </div>
-    </section>
-
-    <!-- RESOURCES -->
-    <section class="resources">
-      <h2>Explore Resources</h2>
-      <div class="button-row">
-        <a class="button" href="./assets/gvai-quick-quiz-slides.pdf" target="_blank" rel="noopener">
-          View Presentation Slides
-        </a>
-        <a class="button" href="#quiz">Quiz Yourself</a>
-      </div>
-    </section>
-
-    <!-- RESOURCEFUL TOOLS -->
-    <section class="tools">
-      <h2>Resourceful Tools</h2>
-      <p class="tools-intro">
-        Curated AI tools for academic learning, research support, and responsible use.
-      </p>
-
-      <div class="tools-grid">
-        <div class="tool-card">
-          <h3>ChatGPT</h3>
-          <p class="tool-use">Clarify concepts, brainstorm, summarize readings, draft outlines.</p>
-          <a class="tool-link" href="https://chat.openai.com" target="_blank" rel="noopener">Official Site</a>
-        </div>
-
-        <div class="tool-card">
-          <h3>Perplexity AI</h3>
-          <p class="tool-use">Research-focused search with source citations.</p>
-          <a class="tool-link" href="https://www.perplexity.ai" target="_blank" rel="noopener">Official Site</a>
-        </div>
-
-        <div class="tool-card">
-          <h3>NotebookLM</h3>
-          <p class="tool-use">Study companion using your own notes and PDFs.</p>
-          <a class="tool-link" href="https://notebooklm.google" target="_blank" rel="noopener">Official Site</a>
-        </div>
-      </div>
-
-      <p class="tools-note">
-        Academic use only. Follow school policy. Never enter private or sensitive information.
-      </p>
-    </section>
-
-    <!-- QUIZ SECTION -->
-    <section class="quiz-section" id="quiz">
-      <div class="quiz-card">
-        <h2>Check Your Understanding</h2>
-        <form id="quiz-form"></form>
-      </div>
-    </section>
-
-    <footer>
-      Powered by Self-Defi •
-      <a href="https://GraduationVaults.com" target="_blank" rel="noopener">Return to Main Site</a>
-    </footer>
-  </main>
-
-  <script src="quiz.js"></script>
+<script src="quiz.js"></script>
 </body>
 </html>
+
 
