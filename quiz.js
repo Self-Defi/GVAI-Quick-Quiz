@@ -7,6 +7,11 @@
    - Save & resume via LocalStorage
    - 50-question pool (AI-focused: tools, use-cases, terms, ethics)
    - “Download PDF Results” opens a print-ready report (use “Save as PDF”)
+
+   UPDATES (2025-12-12):
+   - Restyle support hooks: add stable DOM id per question (#q-1, #q-2, ...)
+   - After "Check Answers": show which question(s) were missed with clickable jump-to chips
+   - Add subtle pulse highlight when jumping to a missed question
 */
 
 (() => {
@@ -760,6 +765,9 @@
       fieldset.className = "q-card";
       fieldset.dataset.qid = q.id;
 
+      // NEW: stable per-question id for jump-to (#q-1, #q-2, ...)
+      fieldset.id = `q-${i + 1}`;
+
       const legend = document.createElement("legend");
       legend.className = "q-title";
       legend.textContent = `${i + 1}. ${q.question}`;
@@ -789,7 +797,7 @@
           persistState();
           updateProgress();
           // remove old correctness styling (if any)
-          fieldset.classList.remove("is-correct", "is-wrong");
+          fieldset.classList.remove("is-correct", "is-wrong", "pulse");
           $$(".choice", fieldset).forEach(c => c.classList.remove("correct", "wrong", "selected"));
           // restore "selected" visual
           label.classList.add("selected");
@@ -836,10 +844,14 @@
     if (!total) return;
 
     let correct = 0;
+    const missedNums = []; // NEW: store missed question numbers (1-based)
 
-    state.quiz.forEach(q => {
+    state.quiz.forEach((q, idx) => {
       const selected = state.answers[q.id];
       const isCorrect = selected === q.correctIndex;
+
+      // if unanswered OR wrong -> missed
+      if (!isCorrect) missedNums.push(idx + 1);
 
       const card = dom.quizForm?.querySelector(`fieldset[data-qid="${q.id}"]`);
       if (!card) return;
@@ -849,14 +861,14 @@
 
       // style the choices
       const labels = $$(".choice", card);
-      labels.forEach((labelEl, idx) => {
+      labels.forEach((labelEl, choiceIdx) => {
         labelEl.classList.remove("correct", "wrong", "selected");
         const input = $("input", labelEl);
         const checked = !!(input && input.checked);
 
-        if (idx === q.correctIndex) labelEl.classList.add("correct");
+        if (choiceIdx === q.correctIndex) labelEl.classList.add("correct");
         if (checked) labelEl.classList.add("selected");
-        if (checked && idx !== q.correctIndex) labelEl.classList.add("wrong");
+        if (checked && choiceIdx !== q.correctIndex) labelEl.classList.add("wrong");
       });
 
       card.classList.toggle("is-correct", isCorrect);
@@ -870,17 +882,49 @@
 
     if (dom.summary) {
       dom.summary.hidden = false;
+
       dom.summary.innerHTML = `
         <div class="summary-card">
           <div class="summary-title">Results</div>
+
           <div class="summary-metrics">
             <div><strong>${correct}</strong> correct</div>
             <div><strong>${missed}</strong> missed</div>
             <div><strong>${scorePct}%</strong> score</div>
           </div>
+
+          ${
+            missedNums.length
+              ? `
+                <div class="missed-block">
+                  <div class="missed-title">Missed question(s):</div>
+                  <div class="missed-list">
+                    ${missedNums.map(n => `<button type="button" class="missed-chip" data-jump="${n}">#${n}</button>`).join("")}
+                  </div>
+                </div>
+              `
+              : `<div class="missed-title">Perfect score 🎯</div>`
+          }
+
           <div class="summary-note">Review explanations on missed questions, then try a new randomized quiz.</div>
         </div>
       `;
+
+      // NEW: jump-to handlers
+      $$(".missed-chip", dom.summary).forEach(btn => {
+        btn.addEventListener("click", () => {
+          const n = btn.getAttribute("data-jump");
+          const el = document.getElementById(`q-${n}`);
+          if (!el) return;
+
+          el.scrollIntoView({ behavior: "smooth", block: "center" });
+          el.classList.remove("pulse");
+          // reflow to restart animation reliably
+          void el.offsetWidth; // eslint-disable-line no-unused-expressions
+          el.classList.add("pulse");
+          setTimeout(() => el.classList.remove("pulse"), 1200);
+        });
+      });
     }
 
     state.checked = true;
@@ -1185,4 +1229,5 @@
   });
 
 })();
+
 
