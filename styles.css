@@ -171,7 +171,7 @@ body {
 /* ---------- Resources section ---------- */
 .resources {
   text-align: center;
-  margin-bottom: 40px;
+  margin-bottom: 32px;
 }
 
 .resources h2 {
@@ -195,7 +195,7 @@ body {
   color: #ffffff;
   text-decoration: none;
   border-radius: var(--pill);
-  font-weight: 700;
+  font-weight: 800;
   font-size: 0.9rem;
   transition: background 0.2s, transform 0.1s, box-shadow 0.2s;
   text-align: center;
@@ -205,6 +205,69 @@ body {
   background: var(--button-hover);
   transform: translateY(-1px);
   box-shadow: 0 6px 14px var(--shadow);
+}
+
+/* ---------- Resourceful Tools ---------- */
+.tools {
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+.tools h2 {
+  margin-bottom: 8px;
+  color: var(--nav);
+}
+
+.tools-intro {
+  max-width: 720px;
+  margin: 0 auto 20px;
+  font-size: 0.95rem;
+  color: var(--muted);
+}
+
+.tools-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 14px;
+}
+
+.tool-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+  text-align: left;
+  box-shadow: 0 6px 14px var(--shadow);
+}
+
+.tool-card h3 {
+  margin: 0 0 6px;
+  font-size: 1rem;
+  color: var(--text);
+}
+
+.tool-use {
+  margin: 0 0 10px;
+  font-size: 0.88rem;
+  color: var(--muted);
+}
+
+.tool-link {
+  display: inline-block;
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: var(--nav);
+  text-decoration: none;
+}
+
+.tool-link:hover {
+  text-decoration: underline;
+}
+
+.tools-note {
+  margin-top: 16px;
+  font-size: 0.82rem;
+  color: var(--muted);
 }
 
 /* ---------- Quiz section ---------- */
@@ -262,7 +325,7 @@ body {
 .select-label {
   font-size: 0.85rem;
   color: var(--muted);
-  font-weight: 700;
+  font-weight: 800;
 }
 
 select {
@@ -271,7 +334,7 @@ select {
   background: transparent;
   color: var(--text);
   padding: 6px 8px;
-  font-weight: 700;
+  font-weight: 800;
 }
 
 /* Progress */
@@ -285,7 +348,7 @@ select {
   justify-content: space-between;
   gap: 10px;
   color: var(--muted);
-  font-weight: 700;
+  font-weight: 800;
   font-size: 0.88rem;
 }
 
@@ -382,7 +445,7 @@ button.secondary {
   border: none;
   border-radius: var(--pill);
   padding: 12px 16px;
-  font-weight: 800;
+  font-weight: 900;
   cursor: pointer;
 }
 
@@ -405,7 +468,7 @@ button.secondary:hover {
 
 button.small {
   padding: 10px 12px;
-  font-weight: 800;
+  font-weight: 900;
   font-size: 0.88rem;
 }
 
@@ -415,7 +478,7 @@ button.small {
   border-radius: 12px;
   border: 1px solid var(--border);
   background: rgba(255, 255, 255, 0.05);
-  font-weight: 800;
+  font-weight: 900;
 }
 
 .quiz-note {
@@ -436,7 +499,7 @@ footer {
 footer a {
   color: var(--nav);
   text-decoration: none;
-  font-weight: 800;
+  font-weight: 900;
 }
 
 footer a:hover { text-decoration: underline; }
@@ -448,9 +511,7 @@ footer a:hover { text-decoration: underline; }
 }
 
 @media (max-width: 600px) {
-  .brand {
-    justify-content: flex-start;
-  }
+  .brand { justify-content: flex-start; }
 
   .brand-logo { width: 32px; height: 32px; }
   .brand-name { font-size: 0.9rem; }
@@ -472,11 +533,44 @@ footer a:hover { text-decoration: underline; }
   .quiz-section { padding: 16px 12px 18px; }
 }
 
+/* ---------- Dark mode readability fixes ---------- */
+html[data-theme="dark"] .hero h1,
+html[data-theme="dark"] .video-section h2,
+html[data-theme="dark"] .resources h2,
+html[data-theme="dark"] .tools h2,
+html[data-theme="dark"] .quiz-section h2,
+html[data-theme="dark"] footer a,
+html[data-theme="dark"] .tool-link {
+  color: rgba(243, 247, 255, 0.92);
+}
+
+html[data-theme="dark"] .select-label,
+html[data-theme="dark"] .progress-meta,
+html[data-theme="dark"] .hero-subtitle,
+html[data-theme="dark"] .tools-intro,
+html[data-theme="dark"] .tools-note,
+html[data-theme="dark"] .quiz-intro,
+html[data-theme="dark"] footer {
+  color: rgba(243, 247, 255, 0.82);
+}
+
+/* Dropdown readability in dark mode */
+html[data-theme="dark"] select {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text);
+}
+
+html[data-theme="dark"] option {
+  background: #0b1b2a;
+  color: #f3f7ff;
+}
+
 /* ---------- Print styles (for "Download PDF Results") ---------- */
 @media print {
   .topbar,
   .video-section,
   .resources,
+  .tools,
   .quiz-actions,
   .quiz-controls,
   .quiz-note,
@@ -501,31 +595,3 @@ footer a:hover { text-decoration: underline; }
   }
 }
 
-/* ---------- Dark mode readability fixes ---------- */
-html[data-theme="dark"] .hero h1,
-html[data-theme="dark"] .video-section h2,
-html[data-theme="dark"] .resources h2,
-html[data-theme="dark"] .quiz-section h2,
-html[data-theme="dark"] footer a {
-  color: rgba(243, 247, 255, 0.92); /* brighter heading/link text */
-}
-
-/* Make dropdown readable in dark mode */
-html[data-theme="dark"] select {
-  background: rgba(255, 255, 255, 0.06);
-  color: var(--text);
-}
-
-html[data-theme="dark"] option {
-  background: #0b1b2a;
-  color: #f3f7ff;
-}
-
-/* Ensure labels stay readable */
-html[data-theme="dark"] .select-label,
-html[data-theme="dark"] .progress-meta,
-html[data-theme="dark"] .hero-subtitle,
-html[data-theme="dark"] .quiz-intro,
-html[data-theme="dark"] footer {
-  color: rgba(243, 247, 255, 0.82);
-}
