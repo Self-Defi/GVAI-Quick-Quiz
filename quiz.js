@@ -1,706 +1,697 @@
-/* =========================================================
-   GVAI Quick Quiz — Learning Hub Runtime
-   - Theme toggle (persisted)
-   - Tools + Quiz gated (open on button)
-   - 45-question responsible AI bank
-   - Randomized order
-   - Progress tracker
-   - Save & resume (LocalStorage)
-   - Printable results -> Save as PDF
-   ========================================================= */
+// quiz.js
+// GVAI Quick Quiz — fully client-side, no external dependencies.
+// Behavior: Tools + Quiz sections can stay hidden until buttons are pressed.
+// Quiz does NOT render until "Quiz Yourself" is clicked.
 
-const STORAGE_KEYS = {
-  theme: "gvai_theme_v1",
-  quiz: "gvai_quiz_state_v1",
-};
-
-function $(sel) {
-  return document.querySelector(sel);
-}
-function $all(sel) {
-  return Array.from(document.querySelectorAll(sel));
-}
-
-function safeParse(json, fallback = null) {
-  try {
-    return JSON.parse(json);
-  } catch {
-    return fallback;
-  }
-}
-
-function shuffle(arr) {
-  return arr
-    .map((v) => ({ v, s: Math.random() }))
-    .sort((a, b) => a.s - b.s)
-    .map(({ v }) => v);
-}
-
-/* -----------------------------
-   Question Bank (45)
-   Responsible Academic AI Use
------------------------------- */
-const QUESTION_BANK = [
+const questions = [
   {
     id: 1,
-    question:
-      "What is the primary goal of using AI tools in the GraduationVaultsAI program?",
-    options: [
-      "To replace student thinking with automated answers",
-      "To speed through assignments with minimal effort",
-      "To use AI as a lever to strengthen understanding and reasoning",
-      "To generate content without review",
-    ],
-    correct: 2,
-    explanation:
-      "AI is positioned as a thinking aid — not a replacement — to build understanding and literacy.",
+    question: "What is the core purpose of GVAI (GraduationVaultsAI)?",
+    options: {
+      A: "To speculate on AI-related tokens and chase short-term yield.",
+      B: "To replace teachers with automated agents.",
+      C: "To give students a guided way to learn how AI and digital infrastructure work together.",
+      D: "To run high-frequency trading strategies for schools."
+    },
+    correct: "C",
+    explanation: "GVAI is framed as an academic learning hub: AI + digital infrastructure basics with responsible use."
   },
   {
     id: 2,
-    question:
-      "Which AI tool is best suited for asking questions directly against your own class notes or PDFs?",
-    options: ["ChatGPT", "NotebookLM", "Canva AI", "Photomath"],
-    correct: 1,
-    explanation:
-      "NotebookLM is designed to answer questions using your uploaded source documents.",
+    question: "How should AI be used in an academic setting (best practice)?",
+    options: {
+      A: "As a tool that assists thinking while the student remains responsible for the final work.",
+      B: "As a replacement for reading assignments.",
+      C: "As a way to submit fully AI-written answers without review.",
+      D: "As a way to share private student data for personalization."
+    },
+    correct: "A",
+    explanation: "AI can support learning (summaries, outlines, clarification), but students must understand and own their work."
   },
   {
     id: 3,
-    question: "Why is Perplexity recommended for research tasks?",
-    options: [
-      "It generates longer essays automatically",
-      "It hides its sources to reduce bias",
-      "It answers questions with cited sources",
-      "It works offline",
-    ],
-    correct: 2,
-    explanation:
-      "Perplexity emphasizes citation discipline, reinforcing evidence-based research.",
+    question: "Why is transparency important in systems like Graduation Vaults?",
+    options: {
+      A: "So only administrators can view activity.",
+      B: "So activity can be hidden from families.",
+      C: "So systems look more complex.",
+      D: "So students, families, and partners can understand decisions and build trust."
+    },
+    correct: "D",
+    explanation: "Transparency builds trust by making processes and outcomes visible and understandable."
   },
   {
     id: 4,
-    question: "Which behavior best reflects responsible AI use in academics?",
-    options: [
-      "Copying AI answers directly into assignments",
-      "Using AI to clarify concepts, then writing in your own words",
-      "Letting AI complete graded work without review",
-      "Sharing login credentials with AI tools",
-    ],
-    correct: 1,
-    explanation:
-      "Responsible use means understanding and synthesizing, not copying.",
+    question: "Which behavior is most aligned with responsible AI use?",
+    options: {
+      A: "Copying AI outputs word-for-word without reading them.",
+      B: "Using AI to summarize and then verifying with class materials or a teacher.",
+      C: "Sharing passwords so AI can ‘log in’ and help.",
+      D: "Using AI to bypass school policy."
+    },
+    correct: "B",
+    explanation: "Use AI to assist learning, then verify and refine using trusted sources and your own understanding."
   },
   {
     id: 5,
-    question:
-      "What does the phrase 'AI gives you the level of thinking you ask for' mean?",
-    options: [
-      "AI always produces expert-level results",
-      "AI limits how deeply students can think",
-      "Prompt quality directly affects output quality",
-      "AI decides what level of detail is appropriate",
-    ],
-    correct: 2,
-    explanation:
-      "Clear roles, goals, and context in prompts produce better reasoning.",
+    question: "In a multi-sig model, who approves transactions?",
+    options: {
+      A: "Only one person, for speed.",
+      B: "AI agents automatically approve transfers.",
+      C: "Multiple human signers approve based on defined rules.",
+      D: "Any donor can approve transactions."
+    },
+    correct: "C",
+    explanation: "Multi-sig requires multiple human approvals, reducing single-point failure risk."
   },
   {
     id: 6,
-    question: "Which is an example of a strong prompt?",
-    options: [
-      "Explain savings",
-      "Help me",
-      "Act as a tutor helping me understand this chapter step-by-step",
-      "Give me answers fast",
-    ],
-    correct: 2,
-    explanation:
-      "Strong prompts assign a role, audience, and objective.",
+    question: "Why avoid entering private information into AI tools?",
+    options: {
+      A: "AI tools always publish your data publicly.",
+      B: "You can’t control downstream storage, retention, or training, so it’s safer to keep personal data out.",
+      C: "AI tools can’t process names.",
+      D: "Schools require students to share passwords."
+    },
+    correct: "B",
+    explanation: "Even reputable tools may store data. Academic use should avoid personal identifiers and sensitive info."
   },
   {
     id: 7,
-    question:
-      "Which tool is most appropriate for creating presentations or visual projects?",
-    options: ["NotebookLM", "Canva AI", "Perplexity", "QANDA"],
-    correct: 1,
-    explanation:
-      "Canva AI is optimized for presentations and visual communication.",
+    question: "What is the best next step if an AI answer might be wrong?",
+    options: {
+      A: "Assume AI is correct and submit it.",
+      B: "Ignore the topic completely.",
+      C: "Cross-check with official materials, teachers, or multiple reliable sources.",
+      D: "Ask AI to hide the uncertainty."
+    },
+    correct: "C",
+    explanation: "Verification is key: compare against trusted sources and course content."
   },
   {
     id: 8,
-    question: "Why should students avoid entering personal information into AI tools?",
-    options: [
-      "AI tools delete data instantly",
-      "Schools track all AI usage",
-      "Privacy and safety risks exist",
-      "AI cannot process personal data",
-    ],
-    correct: 2,
-    explanation:
-      "Responsible use includes protecting personal and sensitive information.",
+    question: "Why emphasize the difference between ‘speculation’ and ‘infrastructure building’?",
+    options: {
+      A: "Because speculation is required for education.",
+      B: "To clarify the work is about long-term systems and accountability, not gambling on price.",
+      C: "To discourage any learning about finance.",
+      D: "To promote meme tokens."
+    },
+    correct: "B",
+    explanation: "The program focuses on durable systems and responsible operations, not price-chasing."
   },
   {
     id: 9,
-    question:
-      "Which tool is best for math problem-solving that emphasizes learning steps?",
-    options: ["ChatGPT", "Perplexity", "Photomath", "Canva AI"],
-    correct: 2,
-    explanation:
-      "Photomath provides guided steps to support learning rather than answer dumping.",
+    question: "Which prompt is most aligned with academic use?",
+    options: {
+      A: "Write my essay and make it undetectable.",
+      B: "Give me the test answers.",
+      C: "Explain this concept using a simple example and a short checklist.",
+      D: "Hack my school portal."
+    },
+    correct: "C",
+    explanation: "Academic use supports understanding (explanations, examples, study aids), not cheating or misuse."
   },
   {
     id: 10,
-    question: "What is the best use of ChatGPT in an academic setting?",
-    options: [
-      "Submitting its output as final work",
-      "Clarifying concepts and brainstorming ideas",
-      "Replacing textbooks",
-      "Completing exams automatically",
-    ],
-    correct: 1,
-    explanation:
-      "ChatGPT works best as a universal thinking assistant: explain, outline, brainstorm, refine.",
+    question: "What does ‘local / client-side quiz’ mean?",
+    options: {
+      A: "Answers are uploaded to a server for grading.",
+      B: "Answers are stored in a public database.",
+      C: "Answers are processed in your browser; nothing is sent to a backend.",
+      D: "Answers are emailed to the administrator."
+    },
+    correct: "C",
+    explanation: "Client-side means everything happens in the browser, improving privacy and reducing dependencies."
   },
 
-  // ---- 11–45: tool categories + prompt discipline + integrity ----
+  // --- Governance / safety / systems questions ---
   {
     id: 11,
-    question: "Which tool helps turn academic papers into structured study cards?",
-    options: ["Perplexity", "Scholarcy", "NotebookLM", "Gamma"],
-    correct: 1,
-    explanation: "Scholarcy specializes in converting academic texts into study cards/summaries.",
+    question: "What is a core security rule in Self-Defi style systems?",
+    options: {
+      A: "Store seed phrases in shared group chats.",
+      B: "Give one person full control for speed.",
+      C: "Use only closed-source wallets for convenience.",
+      D: "Use multi-sig or clear custody controls; never rely on blind trust."
+    },
+    correct: "D",
+    explanation: "Security comes from shared controls, clear roles, and avoiding single points of failure."
   },
   {
     id: 12,
-    question: "Why is citation discipline important when using AI?",
-    options: [
-      "It improves grammar automatically",
-      "It avoids accountability for claims",
-      "It reinforces evidence-based learning",
-      "It makes answers shorter",
-    ],
-    correct: 2,
-    explanation: "Citations help verify accuracy and build research literacy.",
+    question: "Why do governance policies matter even for small school systems?",
+    options: {
+      A: "They only matter at national scale.",
+      B: "They create clear rules for decisions, accountability, and conflict resolution.",
+      C: "They slow everything down for no benefit.",
+      D: "They replace the need for leadership."
+    },
+    correct: "B",
+    explanation: "Governance defines who can do what, when, and why—preventing confusion and misuse."
   },
   {
     id: 13,
-    question: "Which behavior shows misuse of AI in school?",
-    options: [
-      "Asking AI to explain a concept",
-      "Using AI to generate practice questions",
-      "Submitting AI output without understanding or verifying",
-      "Checking AI output against trusted sources",
-    ],
-    correct: 2,
-    explanation: "Submitting without understanding undermines learning and integrity.",
+    question: "Which is an example of 'defense-in-depth'?",
+    options: {
+      A: "One password and no backup.",
+      B: "Multiple layers: strong auth, role separation, backups, and monitoring.",
+      C: "Only using a new app because it’s popular.",
+      D: "Sharing admin access with everyone."
+    },
+    correct: "B",
+    explanation: "Defense-in-depth uses multiple controls so one failure doesn't compromise the system."
   },
   {
     id: 14,
-    question: "What does 'prompt discipline' encourage?",
-    options: [
-      "Only using one-sentence prompts",
-      "Role clarity and outcome focus",
-      "Avoiding AI altogether",
-      "Letting AI guess what you mean",
-    ],
-    correct: 1,
-    explanation: "Good prompts define role, goal, constraints, and format.",
+    question: "What is the most appropriate use of AI for school staff?",
+    options: {
+      A: "Automatically approving financial actions without review.",
+      B: "Replacing all staff meetings.",
+      C: "Drafting clear summaries, checklists, and communications from school materials.",
+      D: "Collecting private student data."
+    },
+    correct: "C",
+    explanation: "AI can accelerate writing and organization, but humans keep decision authority."
   },
   {
     id: 15,
-    question: "Which tool provides lightweight coding exposure directly in the browser?",
-    options: ["CodeHS", "Replit AI", "Canva AI", "NotebookLM"],
-    correct: 1,
-    explanation: "Replit AI enables quick in-browser coding with low setup friction.",
+    question: "What is a safe approach to using AI for research?",
+    options: {
+      A: "Use one AI answer as the only source.",
+      B: "Ask AI for citations, then verify sources and quote correctly.",
+      C: "Avoid sources and rely on opinions.",
+      D: "Copy/paste full paragraphs without attribution."
+    },
+    correct: "B",
+    explanation: "AI can help find and summarize, but you must verify and cite real sources."
   },
   {
     id: 16,
-    question: "Why should AI outputs be cross-checked?",
-    options: [
-      "AI never makes mistakes",
-      "Teachers require it in all cases",
-      "AI can hallucinate or oversimplify",
-      "Cross-checking slows learning too much",
-    ],
-    correct: 2,
-    explanation: "Verification is core to responsible AI use because AI can be wrong or misleading.",
+    question: "Which is the best description of a 'single point of failure'?",
+    options: {
+      A: "A system where one compromised account can break the whole system.",
+      B: "A system with multiple signers and backups.",
+      C: "A system with documentation.",
+      D: "A system with clear roles."
+    },
+    correct: "A",
+    explanation: "When one person or system component can fail and compromise everything, that’s a single point of failure."
   },
   {
     id: 17,
-    question: "Which mindset is safest for using AI in school?",
-    options: [
-      "AI decides correctness",
-      "AI assists, humans decide",
-      "AI replaces teachers",
-      "AI grades and finalizes assignments",
-    ],
-    correct: 1,
-    explanation: "Humans remain accountable for decisions and accuracy.",
+    question: "What does 'least privilege' mean?",
+    options: {
+      A: "Give everyone admin access to avoid delays.",
+      B: "Give users only the access they need for their role, nothing more.",
+      C: "Remove all access so no one can work.",
+      D: "Give donors control of student funds."
+    },
+    correct: "B",
+    explanation: "Least privilege reduces risk by limiting what each user can do."
   },
   {
     id: 18,
-    question: "Which tool is best suited for organizing notes, tasks, and planning academically?",
-    options: ["Notion AI", "Photomath", "QANDA", "Scholarcy"],
-    correct: 0,
-    explanation: "Notion AI supports structured planning, templates, and study organization.",
+    question: "What is the best practice for handling AI hallucinations?",
+    options: {
+      A: "Assume hallucinations never happen.",
+      B: "Treat AI output as a draft; verify facts and adjust prompts.",
+      C: "Hide the hallucination and submit anyway.",
+      D: "Stop learning entirely."
+    },
+    correct: "B",
+    explanation: "Hallucinations happen. The correct move is verification and improved prompting."
   },
+
+  // --- Academic tools questions ---
   {
     id: 19,
-    question: "After using AI to study a topic, what is a strong next step?",
-    options: [
-      "Submit work immediately without review",
-      "Discuss confusing parts with a teacher/mentor",
-      "Delete all notes to avoid bias",
-      "Rely only on AI memory next time",
-    ],
-    correct: 1,
-    explanation: "Human feedback + discussion reinforces learning and catches misunderstandings.",
+    question: "Which tool is best known for step-by-step math and science computations?",
+    options: {
+      A: "Wolfram Alpha",
+      B: "A random social media chatbot",
+      C: "A meme generator",
+      D: "A password manager"
+    },
+    correct: "A",
+    explanation: "Wolfram Alpha specializes in computation and structured problem solving."
   },
   {
     id: 20,
-    question: "Which prompt is most likely to produce a high-quality study explanation?",
-    options: [
-      "Summarize this",
-      "Teach me this like I'm 12 with examples and a short quiz at the end",
-      "Do my homework",
-      "Give me the final answers only",
-    ],
-    correct: 1,
-    explanation: "Clear audience + structure + deliverables improves output quality.",
+    question: "What is a good use case for NotebookLM (in academic scope)?",
+    options: {
+      A: "Trading signals for SOL memes",
+      B: "Studying from your own documents: notes, PDFs, class materials",
+      C: "Sharing student passwords to auto-fill forms",
+      D: "Bypassing school restrictions"
+    },
+    correct: "B",
+    explanation: "NotebookLM is designed around learning from your own materials."
   },
   {
     id: 21,
-    question: "What should you do if an AI answer sounds confident but conflicts with your textbook?",
-    options: [
-      "Trust AI because it sounds confident",
-      "Ignore the textbook",
-      "Cross-check with trusted sources and ask clarifying questions",
-      "Stop using AI permanently",
-    ],
-    correct: 2,
-    explanation: "Cross-checking and refining questions is the responsible move.",
+    question: "Why are official links important in a curated tools list?",
+    options: {
+      A: "They guarantee price discounts.",
+      B: "They prevent all internet risks forever.",
+      C: "They reduce phishing risk and ensure students land on legitimate services.",
+      D: "They increase ad tracking."
+    },
+    correct: "C",
+    explanation: "Official links reduce the chance of phishing and keep resources trustworthy."
   },
+
+  // --- Data / privacy / compliance ---
   {
     id: 22,
-    question: "Which is a good use of AI for writing support?",
-    options: [
-      "Copying the entire essay from AI",
-      "Having AI outline and then rewriting in your own voice",
-      "Asking AI to fake citations",
-      "Submitting AI output without editing",
-    ],
-    correct: 1,
-    explanation: "AI can help outline and improve clarity, but you must author the final work.",
+    question: "Which is safest to share with an AI tool for a class assignment?",
+    options: {
+      A: "Your seed phrase and wallet addresses",
+      B: "A non-identifying example scenario without personal data",
+      C: "Your full legal name and home address",
+      D: "Your school login credentials"
+    },
+    correct: "B",
+    explanation: "Use generalized examples; avoid sensitive personal identifiers and credentials."
   },
   {
     id: 23,
-    question: "What is a privacy-safe way to ask AI for help?",
-    options: [
-      "Share passwords so the tool can access accounts",
-      "Upload private IDs and documents",
-      "Use generic examples and remove identifying details",
-      "Share a friend’s personal info for context",
-    ],
-    correct: 2,
-    explanation: "Keep requests non-identifying and avoid sensitive info.",
+    question: "What is the safest meaning of ‘nothing is uploaded or tracked’ in this quiz context?",
+    options: {
+      A: "It runs locally in your browser without a server collecting answers.",
+      B: "It automatically posts your score online.",
+      C: "It emails your answers to administrators.",
+      D: "It stores your answers in a shared spreadsheet."
+    },
+    correct: "A",
+    explanation: "Client-side logic means no backend collection by default."
   },
   {
     id: 24,
-    question: "Which tool is best when you need a quick explanation across many topics?",
-    options: ["ChatGPT", "Scholarcy", "Photomath", "Canva AI"],
-    correct: 0,
-    explanation: "ChatGPT is the universal thinking assistant for broad concept clarification.",
+    question: "What’s the best reason to implement save-and-resume locally?",
+    options: {
+      A: "To make answers public for transparency.",
+      B: "To reduce privacy and force sign-in.",
+      C: "To let students continue without creating accounts or uploading data.",
+      D: "To share progress across all devices automatically."
+    },
+    correct: "C",
+    explanation: "LocalStorage supports convenience while avoiding account systems."
   },
+
+  // --- Systems thinking / operations ---
   {
     id: 25,
-    question: "Which output format request improves AI usefulness most?",
-    options: [
-      "No format—just answer",
-      "Write something",
-      "Give me a step-by-step checklist with short examples",
-      "Be vague and short",
-    ],
-    correct: 2,
-    explanation: "Asking for structure (checklist, steps, examples) increases clarity and usability.",
+    question: "What is the best definition of 'infrastructure' in this context?",
+    options: {
+      A: "A set of tools, processes, and controls that support reliable operations over time.",
+      B: "A meme coin strategy.",
+      C: "Only physical buildings.",
+      D: "A secret system that no one can understand."
+    },
+    correct: "A",
+    explanation: "Infrastructure includes technical tools and operational processes that enable consistent outcomes."
   },
   {
     id: 26,
-    question: "Why is 'research accuracy' tied to tool choice?",
-    options: [
-      "All tools provide identical evidence",
-      "Some tools emphasize citations and sources more than others",
-      "Research accuracy is purely based on speed",
-      "Accuracy doesn’t matter if it sounds good",
-    ],
-    correct: 1,
-    explanation: "Tools like Perplexity and source-grounded workflows help verification.",
+    question: "Which is a good example of an audit trail?",
+    options: {
+      A: "A log of actions: who did what, when, and why.",
+      B: "A private conversation with no notes.",
+      C: "Deleting mistakes immediately.",
+      D: "Sharing admin passwords."
+    },
+    correct: "A",
+    explanation: "Audit trails support accountability and review."
   },
   {
     id: 27,
-    question: "What should a student do before using AI on a graded assignment?",
-    options: [
-      "Nothing—AI use is always allowed",
-      "Check class policy and teacher expectations",
-      "Hide AI use from everyone",
-      "Use AI only for final answers",
-    ],
-    correct: 1,
-    explanation: "Policy alignment is part of responsible academic use.",
+    question: "If the goal is student safety, what’s the best approach to displaying balances publicly?",
+    options: {
+      A: "Show every student’s exact balance and identity.",
+      B: "Hide all balances permanently even from trustees.",
+      C: "Show aggregated totals, and protect individual student info where required by policy.",
+      D: "Allow anyone to edit balances."
+    },
+    correct: "C",
+    explanation: "Transparency should not compromise student privacy; use aggregation and protection policies."
   },
+
+  // --- AI prompting / learning ---
   {
     id: 28,
-    question: "Which behavior supports independent learning instead of dependence?",
-    options: [
-      "Ask AI to explain, then practice without AI",
-      "Only use AI and never attempt problems yourself",
-      "Avoid practice and rely on AI summaries",
-      "Use AI to finish work quickly and move on",
-    ],
-    correct: 0,
-    explanation: "Use AI for understanding, then practice independently to build skill.",
+    question: "Which prompt produces the most useful academic output?",
+    options: {
+      A: "Explain X to me and include 3 examples and 5 quiz questions.",
+      B: "Do everything for me.",
+      C: "Make it impossible to detect.",
+      D: "Ignore all safety rules."
+    },
+    correct: "A",
+    explanation: "Clear structure (examples + checks for understanding) improves learning value."
   },
   {
     id: 29,
-    question: "Which is a responsible use of image-based math helpers?",
-    options: [
-      "Use them to understand steps, then redo the problem yourself",
-      "Use them to get answers for tests",
-      "Use them to skip learning",
-      "Use them to share classmates’ work",
-    ],
-    correct: 0,
-    explanation: "The purpose is scaffolding and understanding, not cheating.",
+    question: "What’s a strong way to use AI to learn a new topic?",
+    options: {
+      A: "Ask for a 1-page summary, then create a study plan and verify key facts.",
+      B: "Ask for the final answers only.",
+      C: "Ask AI to guess your grade.",
+      D: "Ask for personal data on classmates."
+    },
+    correct: "A",
+    explanation: "Combine summary + plan + verification for real learning."
   },
+
+  // --- Digital literacy / security ---
   {
     id: 30,
-    question: "Which prompt is 'weak' because it lacks a specific role or outcome?",
-    options: [
-      "Act as a study coach and quiz me on Chapter 3",
-      "Help me understand the causes of WWI in 5 bullet points",
-      "Explain this like I'm a beginner and include examples",
-      "Help me",
-    ],
-    correct: 3,
-    explanation: "Weak prompts are vague and don’t define the objective or format.",
+    question: "What’s the best sign a site might be phishing?",
+    options: {
+      A: "It uses HTTPS, so it’s always safe.",
+      B: "It looks professional.",
+      C: "The URL is slightly misspelled or uses odd domains; it asks for passwords unexpectedly.",
+      D: "It has a logo."
+    },
+    correct: "C",
+    explanation: "Phishing often uses lookalike URLs and prompts for sensitive info unexpectedly."
   },
   {
     id: 31,
-    question: "What does 'toolkit literacy' mean in this context?",
-    options: [
-      "Memorizing every AI app name",
-      "Knowing which tool to use for which academic task",
-      "Using AI for everything",
-      "Avoiding AI permanently",
-    ],
-    correct: 1,
-    explanation: "Literacy means selecting tools strategically for learning goals.",
+    question: "Why is it risky to use 'random online advice' for school systems?",
+    options: {
+      A: "Online advice is always wrong.",
+      B: "It can conflict with school policies, safety requirements, and local context.",
+      C: "It makes the internet slower.",
+      D: "It is illegal to read advice."
+    },
+    correct: "B",
+    explanation: "School systems require policy-aligned decisions and consistent guardrails."
   },
+
+  // --- More quiz pool (mixed correct answers) ---
   {
     id: 32,
-    question: "Which is the best use of Canva AI for students?",
-    options: [
-      "Writing full essays",
-      "Building slides and visuals for presentations",
-      "Citing academic sources",
-      "Solving algebra proofs step-by-step",
-    ],
-    correct: 1,
-    explanation: "Canva AI is best for visual communication and presentation assets.",
+    question: "Which is the best example of 'verification' after using AI?",
+    options: {
+      A: "Publishing the AI answer without reading it",
+      B: "Checking at least two reliable sources or course materials for key claims",
+      C: "Changing the topic",
+      D: "Deleting the prompt history"
+    },
+    correct: "B",
+    explanation: "Verification means validating key claims with trusted sources."
   },
   {
     id: 33,
-    question: "If AI gives an incorrect answer, what’s a productive response?",
-    options: [
-      "Assume AI is broken and stop learning",
-      "Treat it as a cue to verify and refine the question",
-      "Blame classmates",
-      "Share the incorrect answer as fact",
-    ],
-    correct: 1,
-    explanation: "Verification + prompt refinement improves outcomes and builds critical thinking.",
+    question: "What’s the safest approach to passwords in any learning tool?",
+    options: {
+      A: "Reuse one password everywhere for convenience",
+      B: "Share passwords with friends to speed up group work",
+      C: "Use strong unique passwords and never share them",
+      D: "Save passwords in public notes"
+    },
+    correct: "C",
+    explanation: "Unique strong passwords + no sharing reduces account compromise risk."
   },
   {
     id: 34,
-    question: "Which is a good research workflow for a student?",
-    options: [
-      "Ask AI once and submit",
-      "Ask AI, collect sources, verify key claims, then write",
-      "Copy AI output with no citations",
-      "Use only one website and never compare",
-    ],
-    correct: 1,
-    explanation: "Responsible workflows include evidence and verification.",
+    question: "What does 'randomized question order' improve?",
+    options: {
+      A: "It prevents all cheating forever",
+      B: "It makes the quiz harder to use",
+      C: "It encourages real understanding by reducing memorization of order",
+      D: "It removes the need for explanations"
+    },
+    correct: "C",
+    explanation: "Randomization reduces pattern memorization and supports genuine comprehension checks."
   },
   {
     id: 35,
-    question: "What is a safe rule when using AI tools at school?",
-    options: [
-      "Never check your work",
-      "Never share passwords or personal identifiers",
-      "Always submit AI output",
-      "Always ask AI for test answers",
-    ],
-    correct: 1,
-    explanation: "Privacy and safety are non-negotiable in responsible use.",
+    question: "What is the main reason to keep this app static (no backend)?",
+    options: {
+      A: "To store student data centrally",
+      B: "To reduce dependencies and keep privacy strong by default",
+      C: "To require logins",
+      D: "To track users across sessions"
+    },
+    correct: "B",
+    explanation: "Static apps reduce attack surface and avoid server-side data collection."
   },
   {
     id: 36,
-    question: "Which tool is best for deep comprehension using your own notes?",
-    options: ["NotebookLM", "Canva AI", "Photomath", "Gamma"],
-    correct: 0,
-    explanation: "NotebookLM is designed around your documents for grounded comprehension.",
+    question: "If a student wants to use AI to improve writing ethically, what’s best?",
+    options: {
+      A: "Ask AI to rewrite everything and submit as-is",
+      B: "Ask AI for an outline and editing suggestions, then write in your own voice",
+      C: "Ask AI to generate citations without sources",
+      D: "Ask AI to pretend to be the teacher"
+    },
+    correct: "B",
+    explanation: "Outlines and edits are fine; the student should produce the final writing authentically."
   },
   {
     id: 37,
-    question: "What’s the main reason to limit AI resources to academic scope?",
-    options: [
-      "To prevent learning",
-      "To keep tool use aligned with school goals and safety expectations",
-      "Because AI is only for adults",
-      "Because research is unnecessary",
-    ],
-    correct: 1,
-    explanation: "Scope-limiting keeps usage aligned with learning objectives and safety.",
+    question: "Which statement best matches 'humans stay in control'?",
+    options: {
+      A: "AI approves decisions automatically",
+      B: "AI can suggest options, but people decide and remain accountable",
+      C: "AI replaces policy",
+      D: "AI should be trusted without question"
+    },
+    correct: "B",
+    explanation: "AI supports; humans decide and remain accountable."
   },
   {
     id: 38,
-    question: "Which is a good prompt constraint to reduce mistakes?",
-    options: [
-      "Make it dramatic",
-      "Include sources and show your reasoning steps briefly",
-      "Ignore my instructions",
-      "Be as vague as possible",
-    ],
-    correct: 1,
-    explanation: "Asking for sources and steps improves transparency and reduces errors.",
+    question: "What is the safest way to use AI for studying a PDF?",
+    options: {
+      A: "Upload private documents with student identifiers to unknown tools",
+      B: "Use a reputable tool and remove personal identifiers when possible",
+      C: "Share the PDF publicly first",
+      D: "Never read the PDF; only ask AI"
+    },
+    correct: "B",
+    explanation: "Use reputable tools, minimize sensitive data, and still read/verify key sections."
   },
   {
     id: 39,
-    question: "What does 'critical thinking' look like with AI support?",
-    options: [
-      "Believing outputs immediately",
-      "Evaluating claims, asking follow-ups, and verifying sources",
-      "Avoiding questions",
-      "Only using AI for grades",
-    ],
-    correct: 1,
-    explanation: "Critical thinking means evaluating and verifying, not accepting blindly.",
+    question: "What does 'academic scope' mean in this resources section?",
+    options: {
+      A: "Tools are listed for entertainment only",
+      B: "Tools are for cheating on exams",
+      C: "Tools are limited to learning, research support, and study assistance",
+      D: "Tools are for financial speculation"
+    },
+    correct: "C",
+    explanation: "Academic scope means learning support: study, research, clarification, drafting—not misuse."
   },
   {
     id: 40,
-    question: "Which is most appropriate if you need a concept explained in multiple ways?",
-    options: [
-      "Ask once and accept",
-      "Ask for analogies, examples, and a short quiz",
-      "Ask AI to do your work",
-      "Ask for the answer only",
-    ],
-    correct: 1,
-    explanation: "Multiple explanations build understanding and reveal gaps.",
+    question: "A good ‘next step’ after finishing the quiz is:",
+    options: {
+      A: "Forget everything and move on",
+      B: "Post your answers publicly with your name",
+      C: "Identify confusing topics and discuss them with a teacher/mentor",
+      D: "Retake until you memorize letters only"
+    },
+    correct: "C",
+    explanation: "Use the quiz to surface learning gaps, then resolve them with trusted guidance."
   },
   {
     id: 41,
-    question: "Why is 'writing improvement' a valid academic AI use case?",
-    options: [
-      "Because AI can replace your voice",
-      "Because AI can help clarify structure while you stay the author",
-      "Because citations don’t matter",
-      "Because editing is cheating",
-    ],
-    correct: 1,
-    explanation: "AI can support clarity and structure while you keep authorship and accountability.",
+    question: "Which is a practical example of a checklist AI could help create?",
+    options: {
+      A: "A step-by-step study plan for a unit exam",
+      B: "A list of student passwords",
+      C: "A bypass guide for school rules",
+      D: "A phishing template"
+    },
+    correct: "A",
+    explanation: "AI is useful for organizing study steps and planning—never for sensitive or harmful tasks."
   },
   {
     id: 42,
-    question: "Which is a responsible way to use AI for studying before a test?",
-    options: [
-      "Generate practice questions and explain wrong answers",
-      "Ask for leaked answers",
-      "Avoid practice and rely on AI summaries",
-      "Copy someone else’s notes into AI with names included",
-    ],
-    correct: 0,
-    explanation: "Practice questions + explanations supports learning and retention.",
+    question: "Which is the best reason to include explanations after each answer?",
+    options: {
+      A: "To make the quiz longer",
+      B: "To support learning by explaining why an answer is correct",
+      C: "To hide the correct answers",
+      D: "To reduce understanding"
+    },
+    correct: "B",
+    explanation: "Explanations turn the quiz into a learning tool, not just a score."
   },
   {
     id: 43,
-    question: "What is the best response if an AI tool provides sources that look suspicious?",
-    options: [
-      "Use them anyway",
-      "Ignore sources completely",
-      "Open and verify the sources or find better ones",
-      "Assume sources are always real",
-    ],
-    correct: 2,
-    explanation: "Source verification is required; AI can generate incorrect or low-quality citations.",
+    question: "What’s a safe way to use Perplexity (or any cited-search tool) academically?",
+    options: {
+      A: "Copy the AI summary without reading sources",
+      B: "Use it to locate sources, then read and cite the originals properly",
+      C: "Use it to generate fake citations",
+      D: "Use it to submit work without attribution"
+    },
+    correct: "B",
+    explanation: "Citations are only useful if you actually consult the underlying sources."
   },
   {
     id: 44,
-    question: "Which option best describes 'research literacy'?",
-    options: [
-      "Knowing how to use emojis in prompts",
-      "Knowing how to find, evaluate, and cite trustworthy sources",
-      "Only using one search result",
-      "Avoiding evidence to save time",
-    ],
-    correct: 1,
-    explanation: "Research literacy is evidence, evaluation, and citation — not speed.",
+    question: "Why include a 'Book Consultation' link on the hub?",
+    options: {
+      A: "To replace students’ learning",
+      B: "To upsell unrelated services",
+      C: "To offer optional human support for setup, clarity, and responsible implementation",
+      D: "To collect private student data"
+    },
+    correct: "C",
+    explanation: "The CTA is for optional human support—aligned with infrastructure help and responsible guidance."
   },
   {
     id: 45,
-    question: "What is a strong next step after finishing the quiz?",
-    options: [
-      "Memorize answer letters only",
-      "Ignore confusing topics",
-      "Write down questions and bring them to a teacher/mentor",
-      "Share personal details online with your score",
-    ],
-    correct: 2,
-    explanation: "The quiz is a checkpoint; turning confusion into questions builds real literacy.",
+    question: "Which is the best policy-aligned AI behavior for students?",
+    options: {
+      A: "Use AI for brainstorming and then write your own response",
+      B: "Ask AI to impersonate a teacher",
+      C: "Ask AI for confidential student data",
+      D: "Ask AI to bypass restrictions"
+    },
+    correct: "A",
+    explanation: "Brainstorming and outlining are appropriate; impersonation and data requests are not."
   },
+  {
+    id: 46,
+    question: "What does a 'progress tracker' help with most?",
+    options: {
+      A: "Forces correct answers",
+      B: "Shows completion status and motivates finishing thoughtfully",
+      C: "Replaces explanations",
+      D: "Makes questions easier"
+    },
+    correct: "B",
+    explanation: "Progress tracking supports pacing and completion without changing question integrity."
+  },
+  {
+    id: 47,
+    question: "What’s a good reason to hide content until a user presses a button (Tools/Quiz)?",
+    options: {
+      A: "To make the page feel broken",
+      B: "To reduce cognitive overload and keep the page clean on mobile",
+      C: "To increase tracking",
+      D: "To slow performance intentionally"
+    },
+    correct: "B",
+    explanation: "Progressive disclosure keeps the experience clean and intentional, especially on phones."
+  },
+  {
+    id: 48,
+    question: "If a tool asks for a seed phrase, what should a student do?",
+    options: {
+      A: "Enter it so the tool can help",
+      B: "Share it with a teacher",
+      C: "Never share it; stop and ask a trusted adult/mentor if unsure",
+      D: "Post it in a group chat"
+    },
+    correct: "C",
+    explanation: "Seed phrases are private keys—never share them. If unsure, stop and get trusted help."
+  }
 ];
 
-/* -----------------------------
-   Theme Toggle
------------------------------- */
-function applyTheme(theme) {
-  const html = document.documentElement;
-  html.setAttribute("data-theme", theme);
-  try {
-    localStorage.setItem(STORAGE_KEYS.theme, theme);
-  } catch {}
-}
+// ---------------- State ----------------
+let activeQuiz = [];
+let quizLoaded = false;
+const STORAGE_KEY = "gvai_quiz_state_v1";
 
-function initTheme() {
-  const saved = safeParse(localStorage.getItem(STORAGE_KEYS.theme), null);
-  // saved might be a string if previously stored directly
-  const theme =
-    saved === "dark" || saved === "light"
-      ? saved
-      : localStorage.getItem(STORAGE_KEYS.theme) || document.documentElement.getAttribute("data-theme") || "light";
-
-  applyTheme(theme);
-
-  const toggleBtn = $("#theme-toggle");
-  if (toggleBtn) {
-    toggleBtn.addEventListener("click", () => {
-      const current = document.documentElement.getAttribute("data-theme") || "light";
-      applyTheme(current === "dark" ? "light" : "dark");
-    });
+// ---------------- Helpers ----------------
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
   }
+  return a;
 }
 
-/* -----------------------------
-   Collapsibles (Tools / Quiz)
------------------------------- */
-function openSection(id) {
-  const el = $(id);
-  if (!el) return;
-  el.hidden = false;
-
-  // Hide the other section if both exist
-  if (id === "#quiz") {
-    const tools = $("#tools");
-    if (tools) tools.hidden = true;
-  }
-  if (id === "#tools") {
-    const quiz = $("#quiz");
-    if (quiz) quiz.hidden = true;
-  }
-
-  // Scroll into view for mobile
-  setTimeout(() => {
-    el.scrollIntoView({ behavior: "smooth", block: "start" });
-  }, 50);
+function clampQuizSize(n) {
+  const max = Math.max(1, questions.length);
+  return Math.min(Math.max(1, n), max);
 }
 
-function closeSection(id) {
-  const el = $(id);
-  if (!el) return;
-  el.hidden = true;
-}
-
-function initCollapsibles() {
-  $("#open-tools")?.addEventListener("click", () => openSection("#tools"));
-  $("#open-quiz")?.addEventListener("click", () => {
-    openSection("#quiz");
-    ensureQuizInitialized();
+function getSelectedAnswers() {
+  const answers = {};
+  activeQuiz.forEach((q) => {
+    const selected = document.querySelector(`input[name="q${q.id}"]:checked`);
+    if (selected) answers[q.id] = selected.value;
   });
-
-  // close buttons with data-close="#quiz" or "#tools"
-  $all("[data-close]").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      const target = btn.getAttribute("data-close");
-      if (target) closeSection(target);
-    });
-  });
+  return answers;
 }
 
-/* -----------------------------
-   Quiz State + Persistence
------------------------------- */
-let quizInitialized = false;
-let activeQuestionIds = [];
-let answers = {}; // { [qid]: selectedIndex }
-let lastGraded = null; // { score, total, timeISO }
+function setProgress() {
+  const answered = activeQuiz.reduce((acc, q) => {
+    const selected = document.querySelector(`input[name="q${q.id}"]:checked`);
+    return acc + (selected ? 1 : 0);
+  }, 0);
 
-function saveQuizState() {
-  const state = {
-    version: 1,
-    activeQuestionIds,
-    answers,
-    quizSize: parseInt($("#quiz-size")?.value || "20", 10),
-    lastGraded,
+  const total = activeQuiz.length || 0;
+  const pct = total ? Math.round((answered / total) * 100) : 0;
+
+  const progressText = document.getElementById("progress-text");
+  const progressPercent = document.getElementById("progress-percent");
+  const progressFill = document.getElementById("progress-fill");
+  const progressBar = document.querySelector(".progress-bar");
+
+  if (progressText) progressText.textContent = `Progress: ${answered} / ${total}`;
+  if (progressPercent) progressPercent.textContent = `${pct}%`;
+  if (progressFill) progressFill.style.width = `${pct}%`;
+  if (progressBar) progressBar.setAttribute("aria-valuenow", String(pct));
+}
+
+function saveState() {
+  const sizeEl = document.getElementById("quiz-size");
+  const payload = {
+    size: sizeEl ? Number(sizeEl.value) : 20,
+    activeIds: activeQuiz.map((q) => q.id),
+    answers: getSelectedAnswers(),
+    theme: document.documentElement.getAttribute("data-theme") || "light"
   };
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+}
+
+function loadState() {
   try {
-    localStorage.setItem(STORAGE_KEYS.quiz, JSON.stringify(state));
-  } catch {}
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return null;
+    return JSON.parse(raw);
+  } catch {
+    return null;
+  }
 }
 
-function loadQuizState() {
-  const raw = localStorage.getItem(STORAGE_KEYS.quiz);
-  if (!raw) return null;
-  return safeParse(raw, null);
+function clearState() {
+  localStorage.removeItem(STORAGE_KEY);
 }
 
-function clearQuizState() {
-  try {
-    localStorage.removeItem(STORAGE_KEYS.quiz);
-  } catch {}
-}
-
-/* -----------------------------
-   Quiz Engine
------------------------------- */
-function pickQuizIds(size) {
-  const ids = QUESTION_BANK.map((q) => q.id);
-  return shuffle(ids).slice(0, size);
-}
-
-function getQuestionById(id) {
-  return QUESTION_BANK.find((q) => q.id === id);
-}
-
+// ---------------- Render ----------------
 function renderQuiz() {
-  const form = $("#quiz-form");
+  const form = document.getElementById("quiz-form");
   if (!form) return;
 
   form.innerHTML = "";
-  const questions = activeQuestionIds.map(getQuestionById).filter(Boolean);
 
-  questions.forEach((q, idx) => {
-    const wrap = document.createElement("div");
-    wrap.className = "quiz-question";
-    wrap.dataset.qid = String(q.id);
+  activeQuiz.forEach((q, index) => {
+    const questionNumber = index + 1;
 
-    const h3 = document.createElement("h3");
-    h3.textContent = `${idx + 1}. ${q.question}`;
-    wrap.appendChild(h3);
+    const questionDiv = document.createElement("div");
+    questionDiv.className = "quiz-question";
+    questionDiv.dataset.questionId = q.id;
 
-    const ul = document.createElement("ul");
-    ul.className = "quiz-options";
+    const heading = document.createElement("h3");
+    heading.textContent = `${questionNumber}. ${q.question}`;
+    questionDiv.appendChild(heading);
 
-    q.options.forEach((opt, optIdx) => {
+    const optionsList = document.createElement("ul");
+    optionsList.className = "quiz-options";
+
+    Object.entries(q.options).forEach(([key, text]) => {
       const li = document.createElement("li");
 
       const label = document.createElement("label");
@@ -708,283 +699,246 @@ function renderQuiz() {
 
       const input = document.createElement("input");
       input.type = "radio";
-      input.name = `qid-${q.id}`;
-      input.value = String(optIdx);
-
-      // restore selection
-      if (answers[q.id] === optIdx) input.checked = true;
+      input.name = `q${q.id}`;
+      input.value = key;
 
       input.addEventListener("change", () => {
-        answers[q.id] = optIdx;
-        saveQuizState();
-        updateProgress();
+        setProgress();
+        saveState();
       });
 
       const span = document.createElement("span");
-      // Show letter + option text
-      const letter = ["A", "B", "C", "D"][optIdx] || "";
-      span.textContent = `${letter}) ${opt}`;
+      span.textContent = `${key}) ${text}`;
 
       label.appendChild(input);
       label.appendChild(span);
       li.appendChild(label);
-      ul.appendChild(li);
+      optionsList.appendChild(li);
     });
 
     const feedback = document.createElement("div");
     feedback.className = "quiz-feedback";
-    feedback.id = `feedback-${q.id}`;
+    feedback.id = `feedback-q${q.id}`;
     feedback.setAttribute("aria-live", "polite");
 
-    wrap.appendChild(ul);
-    wrap.appendChild(feedback);
+    questionDiv.appendChild(optionsList);
+    questionDiv.appendChild(feedback);
 
-    form.appendChild(wrap);
+    form.appendChild(questionDiv);
   });
 
-  updateProgress();
+  setProgress();
 }
 
-function updateProgress() {
-  const total = activeQuestionIds.length;
-  const answered = Object.keys(answers).filter((qid) => activeQuestionIds.includes(parseInt(qid, 10))).length;
-
-  const pct = total ? Math.round((answered / total) * 100) : 0;
-
-  $("#progress-text") && ($("#progress-text").textContent = `Progress: ${answered} / ${total}`);
-  $("#progress-percent") && ($("#progress-percent").textContent = `${pct}%`);
-  $("#progress-fill") && ($("#progress-fill").style.width = `${pct}%`);
-
-  const bar = $(".progress-bar");
-  if (bar) bar.setAttribute("aria-valuenow", String(pct));
+function hydrateAnswers(savedAnswers = {}) {
+  Object.entries(savedAnswers).forEach(([qid, val]) => {
+    const el = document.querySelector(`input[name="q${qid}"][value="${val}"]`);
+    if (el) el.checked = true;
+  });
+  setProgress();
 }
 
-function newQuizFromSize() {
-  const size = parseInt($("#quiz-size")?.value || "20", 10);
-  activeQuestionIds = pickQuizIds(size);
-  answers = {};
-  lastGraded = null;
-  saveQuizState();
+function buildNewQuiz(size) {
+  const n = clampQuizSize(size);
+  activeQuiz = shuffle(questions).slice(0, n);
   renderQuiz();
-
-  const summary = $("#quiz-summary");
-  if (summary) {
-    summary.hidden = true;
-    summary.textContent = "";
-  }
-}
-
-function resetQuiz() {
-  // keep same active question order but clear answers
-  answers = {};
-  lastGraded = null;
-
-  $all(".quiz-feedback").forEach((el) => {
+  // Clear feedback + summary when building a new quiz
+  document.querySelectorAll(".quiz-feedback").forEach((el) => {
     el.textContent = "";
     el.className = "quiz-feedback";
   });
-
-  const summary = $("#quiz-summary");
+  const summary = document.getElementById("quiz-summary");
   if (summary) {
     summary.hidden = true;
     summary.textContent = "";
   }
-
-  saveQuizState();
-  renderQuiz();
+  saveState();
 }
 
 function gradeQuiz() {
-  const questions = activeQuestionIds.map(getQuestionById).filter(Boolean);
   let correctCount = 0;
 
-  questions.forEach((q) => {
-    const feedbackEl = $(`#feedback-${q.id}`);
+  activeQuiz.forEach((q) => {
+    const selected = document.querySelector(`input[name="q${q.id}"]:checked`);
+    const feedbackEl = document.getElementById(`feedback-q${q.id}`);
     if (!feedbackEl) return;
 
-    const selected = answers[q.id];
-
-    if (selected === undefined) {
+    if (!selected) {
       feedbackEl.textContent = "No answer selected yet.";
       feedbackEl.className = "quiz-feedback neutral";
       return;
     }
 
-    const correctIdx = q.correct;
-    const correctLetter = ["A", "B", "C", "D"][correctIdx] || "";
-
-    if (selected === correctIdx) {
+    if (selected.value === q.correct) {
       correctCount++;
       feedbackEl.textContent = `✅ Correct. ${q.explanation}`;
       feedbackEl.className = "quiz-feedback correct";
     } else {
-      feedbackEl.textContent = `❌ Not quite. Correct answer: ${correctLetter}). ${q.explanation}`;
+      feedbackEl.textContent = `❌ Not quite. Correct answer: ${q.correct}). ${q.explanation}`;
       feedbackEl.className = "quiz-feedback incorrect";
     }
   });
 
-  const summary = $("#quiz-summary");
+  const summary = document.getElementById("quiz-summary");
   if (summary) {
     summary.hidden = false;
-    summary.textContent = `You answered ${correctCount} out of ${questions.length} correctly.`;
+    summary.textContent = `You answered ${correctCount} out of ${activeQuiz.length} correctly.`;
   }
 
-  lastGraded = {
-    score: correctCount,
-    total: questions.length,
-    timeISO: new Date().toISOString(),
-  };
-  saveQuizState();
+  saveState();
 }
 
-function downloadResultsAsPDF() {
-  // Simple, reliable approach: open printable page, user saves as PDF.
-  const questions = activeQuestionIds.map(getQuestionById).filter(Boolean);
+function resetQuiz() {
+  const form = document.getElementById("quiz-form");
+  if (form) form.reset();
 
-  const answered = questions.map((q, idx) => {
-    const selected = answers[q.id];
-    const correctIdx = q.correct;
-
-    const selectedLetter =
-      selected === undefined ? "—" : ["A", "B", "C", "D"][selected] || "—";
-    const correctLetter = ["A", "B", "C", "D"][correctIdx] || "—";
-
-    const isCorrect = selected === correctIdx;
-
-    return {
-      number: idx + 1,
-      question: q.question,
-      selectedLetter,
-      correctLetter,
-      status: selected === undefined ? "Unanswered" : isCorrect ? "Correct" : "Incorrect",
-      explanation: q.explanation,
-    };
+  document.querySelectorAll(".quiz-feedback").forEach((el) => {
+    el.textContent = "";
+    el.className = "quiz-feedback";
   });
 
-  const scoreText = lastGraded
-    ? `Score: ${lastGraded.score} / ${lastGraded.total}`
-    : "Score: (Run 'Check Answers' first for a score)";
+  const summary = document.getElementById("quiz-summary");
+  if (summary) {
+    summary.hidden = true;
+    summary.textContent = "";
+  }
 
-  const win = window.open("", "_blank", "noopener,noreferrer");
-  if (!win) return;
-
-  win.document.write(`<!doctype html>
-<html>
-<head>
-  <meta charset="utf-8" />
-  <title>GVAI Quick Quiz — Results</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <style>
-    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin: 24px; color: #111; }
-    h1 { margin: 0 0 6px; }
-    .meta { color: #444; margin-bottom: 18px; }
-    .card { border: 1px solid #ddd; border-radius: 12px; padding: 14px; margin: 12px 0; }
-    .row { display:flex; gap:12px; flex-wrap:wrap; margin: 8px 0; }
-    .pill { display:inline-block; padding: 4px 10px; border-radius: 999px; border: 1px solid #ccc; font-size: 12px; }
-    .ok { border-color:#15803d; }
-    .bad { border-color:#b91c1c; }
-    .na { border-color:#92400e; }
-    .q { font-weight:700; }
-    .small { font-size: 13px; color:#333; }
-    @media print { button { display:none; } }
-  </style>
-</head>
-<body>
-  <h1>GVAI Quick Quiz — Results</h1>
-  <div class="meta">
-    <div>${scoreText}</div>
-    <div>Generated: ${new Date().toLocaleString()}</div>
-    <div class="small">Academic use only. Do not include personal identifiers. Follow school policy.</div>
-  </div>
-
-  <button onclick="window.print()" style="padding:10px 14px;border-radius:10px;border:1px solid #ccc;background:#fff;cursor:pointer;">
-    Print / Save as PDF
-  </button>
-
-  ${answered
-    .map((r) => {
-      const cls = r.status === "Correct" ? "ok" : r.status === "Incorrect" ? "bad" : "na";
-      return `
-        <div class="card">
-          <div class="q">${r.number}. ${r.question}</div>
-          <div class="row">
-            <span class="pill ${cls}">Status: ${r.status}</span>
-            <span class="pill">Selected: ${r.selectedLetter}</span>
-            <span class="pill">Correct: ${r.correctLetter}</span>
-          </div>
-          <div class="small"><strong>Explanation:</strong> ${r.explanation}</div>
-        </div>
-      `;
-    })
-    .join("")}
-</body>
-</html>`);
-
-  win.document.close();
-  win.focus();
+  setProgress();
+  saveState();
 }
 
-function ensureQuizInitialized() {
-  if (quizInitialized) return;
+function downloadPDF() {
+  // Reliable “download” via print-to-PDF (client-side, no libs)
+  window.print();
+}
 
-  // Try to restore state
-  const state = loadQuizState();
-  const sizeEl = $("#quiz-size");
+// ---------------- UI: open/close sections ----------------
+function showSection(selector) {
+  const el = document.querySelector(selector);
+  if (!el) return;
+  el.hidden = false;
 
-  if (state && Array.isArray(state.activeQuestionIds) && state.activeQuestionIds.length) {
-    activeQuestionIds = state.activeQuestionIds;
-    answers = state.answers || {};
-    lastGraded = state.lastGraded || null;
+  // Update hash without harsh jump
+  history.replaceState(null, "", selector);
 
-    if (sizeEl && state.quizSize) {
-      sizeEl.value = String(state.quizSize);
-    }
+  setTimeout(() => el.scrollIntoView({ behavior: "smooth", block: "start" }), 50);
+}
+
+function hideSection(selector) {
+  const el = document.querySelector(selector);
+  if (!el) return;
+  el.hidden = true;
+  if (location.hash === selector) history.replaceState(null, "", "#resources");
+}
+
+// ---------------- Theme ----------------
+function applyTheme(theme) {
+  const t = theme === "dark" ? "dark" : "light";
+  document.documentElement.setAttribute("data-theme", t);
+}
+
+function toggleTheme() {
+  const current = document.documentElement.getAttribute("data-theme") || "light";
+  const next = current === "dark" ? "light" : "dark";
+  applyTheme(next);
+
+  // Only save if user has started interacting or state exists
+  const saved = loadState();
+  if (saved || quizLoaded) saveState();
+}
+
+// ---------------- Init (ONLY called when quiz opened) ----------------
+function initQuizOnce() {
+  if (quizLoaded) return;
+  quizLoaded = true;
+
+  const sizeEl = document.getElementById("quiz-size");
+  const newBtn = document.getElementById("new-quiz");
+  const checkBtn = document.getElementById("check-answers");
+  const resetBtn = document.getElementById("reset-quiz");
+  const dlBtn = document.getElementById("download-results");
+
+  const saved = loadState();
+
+  // Restore theme if saved
+  if (saved?.theme) applyTheme(saved.theme);
+
+  // Restore quiz state if saved
+  if (saved && Array.isArray(saved.activeIds) && saved.activeIds.length) {
+    const map = new Map(questions.map((q) => [q.id, q]));
+    activeQuiz = saved.activeIds.map((id) => map.get(id)).filter(Boolean);
+
+    if (sizeEl) sizeEl.value = String(clampQuizSize(saved.size || activeQuiz.length));
 
     renderQuiz();
+    hydrateAnswers(saved.answers || {});
   } else {
-    // Fresh
-    if (!sizeEl) {
-      activeQuestionIds = pickQuizIds(20);
-    } else {
-      activeQuestionIds = pickQuizIds(parseInt(sizeEl.value, 10));
-    }
-    answers = {};
-    lastGraded = null;
-    saveQuizState();
-    renderQuiz();
+    // First-time build
+    const size = sizeEl ? Number(sizeEl.value) : 20;
+    buildNewQuiz(size);
   }
 
-  // Wire quiz controls
-  $("#new-quiz")?.addEventListener("click", () => {
-    newQuizFromSize();
-  });
+  // Events
+  if (sizeEl) {
+    sizeEl.addEventListener("change", () => {
+      buildNewQuiz(Number(sizeEl.value));
+    });
+  }
 
-  $("#check-answers")?.addEventListener("click", () => {
-    gradeQuiz();
-  });
+  if (newBtn) {
+    newBtn.addEventListener("click", () => {
+      const size = sizeEl ? Number(sizeEl.value) : 20;
+      buildNewQuiz(size);
+    });
+  }
 
-  $("#reset-quiz")?.addEventListener("click", () => {
-    resetQuiz();
-  });
-
-  $("#download-results")?.addEventListener("click", () => {
-    downloadResultsAsPDF();
-  });
-
-  // If user changes size selector, don’t auto-rebuild (avoid data loss)
-  // They click "New Quiz" to apply.
-  quizInitialized = true;
+  if (checkBtn) checkBtn.addEventListener("click", gradeQuiz);
+  if (resetBtn) resetBtn.addEventListener("click", resetQuiz);
+  if (dlBtn) dlBtn.addEventListener("click", downloadPDF);
 }
 
-/* -----------------------------
-   Boot
------------------------------- */
+// ---------------- Global wiring (runs on load, does NOT render quiz) ----------------
 document.addEventListener("DOMContentLoaded", () => {
-  initTheme();
-  initCollapsibles();
+  // Default theme
+  applyTheme("light");
 
-  // Keep tools + quiz hidden on load (your HTML already sets hidden)
-  // Do not render quiz until button press -> ensureQuizInitialized() is called from open-quiz
+  // Theme toggle always available
+  const themeBtn = document.getElementById("theme-toggle");
+  if (themeBtn) themeBtn.addEventListener("click", toggleTheme);
+
+  // Open Tools
+  const openTools = document.getElementById("open-tools");
+  if (openTools) {
+    openTools.addEventListener("click", () => showSection("#tools"));
+  }
+
+  // Open Quiz (only now do we init)
+  const openQuiz = document.getElementById("open-quiz");
+  if (openQuiz) {
+    openQuiz.addEventListener("click", () => {
+      showSection("#quiz");
+      initQuizOnce();
+    });
+  }
+
+  // Close buttons
+  document.querySelectorAll("[data-close]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const sel = btn.getAttribute("data-close");
+      if (sel) hideSection(sel);
+    });
+  });
+
+  // Deep link support
+  if (location.hash === "#tools") {
+    showSection("#tools");
+  }
+  if (location.hash === "#quiz") {
+    showSection("#quiz");
+    initQuizOnce();
+  }
+
+  // If there is saved state and user deep-links later, it's handled above.
+  // We intentionally do NOT auto-open quiz/tools on load.
 });
-
 
