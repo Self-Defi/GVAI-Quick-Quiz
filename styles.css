@@ -392,6 +392,138 @@ html[data-theme="dark"] .quiz-question {
   color: var(--text);
 }
 
+/* =========================================================
+   ✅ READABILITY UPGRADE (matches your JS-generated markup)
+   - Your JS creates: fieldset.q-card > legend.q-title + div.q-choices > label.choice > span.choice-text
+   - This block fixes the “hard to read” problem without changing HTML/JS.
+   ========================================================= */
+
+fieldset.q-card {
+  /* remove default fieldset box + weird inset */
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 16px 16px 14px;
+  margin: 0 0 16px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.16), rgba(255,255,255,0.06));
+  box-shadow: 0 8px 22px var(--shadow);
+}
+
+html[data-theme="dark"] fieldset.q-card {
+  background: rgba(255,255,255,0.03);
+  border-color: rgba(255,255,255,0.12);
+}
+
+/* legend styling is the #1 readability lever */
+legend.q-title {
+  /* legend defaults can be brutal: this fixes it */
+  float: none;
+  width: 100%;
+  padding: 0;
+  margin: 0 0 12px;
+  font-weight: 950;
+  font-size: 1.12rem;
+  line-height: 1.45;
+  color: var(--text);
+  letter-spacing: 0.1px;
+}
+
+html[data-theme="dark"] legend.q-title {
+  color: rgba(243, 247, 255, 0.95);
+}
+
+/* choice list spacing */
+.q-choices {
+  display: grid;
+  gap: 10px;
+}
+
+/* answer option “cards” */
+label.choice {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.10);
+  cursor: pointer;
+  transition: transform 0.08s ease, box-shadow 0.18s ease, background 0.18s ease;
+}
+
+label.choice:hover {
+  box-shadow: 0 8px 18px var(--shadow);
+  transform: translateY(-1px);
+}
+
+html[data-theme="dark"] label.choice {
+  background: rgba(255,255,255,0.04);
+  border-color: rgba(255,255,255,0.12);
+}
+
+/* radio alignment */
+label.choice input[type="radio"] {
+  margin-top: 3px;
+}
+
+/* answer text: bump size + line-height */
+.choice-text {
+  font-size: 0.98rem;
+  line-height: 1.48;
+  color: var(--text);
+}
+
+html[data-theme="dark"] .choice-text {
+  color: rgba(243, 247, 255, 0.92);
+}
+
+/* selected / correct / wrong signals (high-contrast but not neon) */
+label.choice.selected {
+  background: rgba(15, 48, 77, 0.10);
+  border-color: rgba(15, 48, 77, 0.45);
+}
+
+html[data-theme="dark"] label.choice.selected {
+  background: rgba(243, 247, 255, 0.08);
+  border-color: rgba(243, 247, 255, 0.28);
+}
+
+label.choice.correct {
+  background: rgba(22, 101, 52, 0.10);
+  border-color: rgba(22, 101, 52, 0.55);
+}
+
+label.choice.wrong {
+  background: rgba(185, 28, 28, 0.10);
+  border-color: rgba(185, 28, 28, 0.55);
+}
+
+/* explanation box (JS creates div.explain) */
+.explain {
+  margin-top: 12px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,0.10);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+html[data-theme="dark"] .explain {
+  background: rgba(255,255,255,0.05);
+  border-color: rgba(255,255,255,0.12);
+  color: rgba(243, 247, 255, 0.82);
+}
+
+/* make the red pulse jump-to animation visible on the full card */
+fieldset.q-card.pulse {
+  animation: pulse 0.8s ease-out;
+}
+
+/* =========================================================
+   END READABILITY UPGRADE
+   ========================================================= */
+
 .quiz-options {
   list-style: none;
   padding: 0;
@@ -521,7 +653,6 @@ button.small {
   animation: pulse 0.8s ease-out;
 }
 
-
 .quiz-note {
   margin: 14px 0 0;
   color: var(--muted);
@@ -572,6 +703,16 @@ footer a:hover { text-decoration: underline; }
   }
 
   .quiz-section { padding: 16px 12px 18px; }
+
+  /* mobile readability bump */
+  legend.q-title {
+    font-size: 1.05rem;
+    line-height: 1.5;
+  }
+  .choice-text {
+    font-size: 0.98rem;
+    line-height: 1.5;
+  }
 }
 
 /* ---------- Dark mode readability fixes ---------- */
@@ -630,9 +771,17 @@ html[data-theme="dark"] option {
     background: #ffffff !important;
   }
 
-  .quiz-feedback {
+  .quiz-feedback,
+  .explain,
+  fieldset.q-card {
     border: 1px solid #dddddd !important;
     background: #ffffff !important;
+    box-shadow: none !important;
+    color: #000 !important;
+  }
+
+  legend.q-title {
+    color: #000 !important;
   }
 }
 
@@ -697,3 +846,4 @@ button.button {
 select {
   font-size: 16px;
 }
+
