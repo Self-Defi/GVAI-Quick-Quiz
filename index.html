@@ -39,7 +39,7 @@
   <meta name="twitter:title" content="GVAI Quick Quiz — Learning Hub" />
   <meta
     name="twitter:description"
-    content="Intro video, mind map, slides, and a short quiz for AI + digital infrastructure basics."
+    content="Intro video, resources, and a short quiz for AI + digital infrastructure basics."
   />
   <meta
     name="twitter:image"
@@ -66,7 +66,13 @@
     </div>
 
     <div class="topbar-actions">
-      <button type="button" id="theme-toggle" class="icon-btn" aria-label="Toggle dark mode" title="Toggle dark mode">
+      <button
+        type="button"
+        id="theme-toggle"
+        class="icon-btn"
+        aria-label="Toggle dark mode"
+        title="Toggle dark mode"
+      >
         <span class="icon" aria-hidden="true">🌓</span>
         <span class="icon-label">Mode</span>
       </button>
@@ -106,24 +112,67 @@
       <div class="button-row">
         <a
           class="button"
-          href="https://blue-magnetic-sole-156.mypinata.cloud/ipfs/bafybeie7x2ff4ojbmlo3u76gns3npbwvmbs3yrejgapu6okqln5bduyh7m"
+          href="./assets/gvai-quick-quiz-slides.pdf"
           target="_blank"
           rel="noopener"
         >
-          View Mind Map
+          View Presentation Slides
         </a>
 
-        <a
-  class="button"
-  href="./assets/gvai-quick-quiz-slides.pdf"
-  target="_blank"
-  rel="noopener"
->
-  View Presentation Slides
-</a>
-
+        <!-- Scrolls user down to local quiz -->
         <a class="button" href="#quiz">Quiz Yourself</a>
       </div>
+    </section>
+
+    <!-- RESOURCEFUL TOOLS -->
+    <section class="tools" id="tools">
+      <h2>Resourceful Tools</h2>
+      <p class="tools-intro">
+        Curated AI tools for academic learning, research support, and responsible use.
+        These tools are designed to help you understand, draft, and organize ideas — not replace learning.
+      </p>
+
+      <div class="tools-grid">
+        <div class="tool-card">
+          <h3>ChatGPT</h3>
+          <p class="tool-use">Concept clarification, brainstorming, summarizing readings, and drafting outlines.</p>
+          <a class="tool-link" href="https://chat.openai.com" target="_blank" rel="noopener">Official Site</a>
+        </div>
+
+        <div class="tool-card">
+          <h3>Perplexity AI</h3>
+          <p class="tool-use">Research-focused exploration with sources for fact-checking and citations.</p>
+          <a class="tool-link" href="https://www.perplexity.ai" target="_blank" rel="noopener">Official Site</a>
+        </div>
+
+        <div class="tool-card">
+          <h3>Google Gemini</h3>
+          <p class="tool-use">Explaining concepts, summarizing content, and drafting study materials.</p>
+          <a class="tool-link" href="https://ai.google" target="_blank" rel="noopener">Official Site</a>
+        </div>
+
+        <div class="tool-card">
+          <h3>NotebookLM</h3>
+          <p class="tool-use">Study companion that works with your own notes and class PDFs.</p>
+          <a class="tool-link" href="https://notebooklm.google" target="_blank" rel="noopener">Official Site</a>
+        </div>
+
+        <div class="tool-card">
+          <h3>Khan Academy (AI)</h3>
+          <p class="tool-use">Guided tutoring-style explanations aligned with academic subjects.</p>
+          <a class="tool-link" href="https://www.khanacademy.org/khan-labs" target="_blank" rel="noopener">Official Site</a>
+        </div>
+
+        <div class="tool-card">
+          <h3>Wolfram Alpha</h3>
+          <p class="tool-use">Step-by-step support for math, science, and quantitative reasoning.</p>
+          <a class="tool-link" href="https://www.wolframalpha.com" target="_blank" rel="noopener">Official Site</a>
+        </div>
+      </div>
+
+      <p class="tools-note">
+        Academic use only. Follow school policy. Do not enter private information, passwords, or personal identifiers into AI tools.
+      </p>
     </section>
 
     <!-- QUIZ SECTION -->
@@ -160,7 +209,13 @@
             <span id="progress-text">Progress: 0 / 0</span>
             <span id="progress-percent">0%</span>
           </div>
-          <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+          <div
+            class="progress-bar"
+            role="progressbar"
+            aria-valuemin="0"
+            aria-valuemax="100"
+            aria-valuenow="0"
+          >
             <div class="progress-fill" id="progress-fill"></div>
           </div>
         </div>
@@ -196,8 +251,10 @@
         Return to Main Site
       </a>
     </footer>
-
-    <script src="quiz.js"></script>
   </main>
+
+  <!-- Must be last -->
+  <script src="quiz.js"></script>
 </body>
 </html>
+
