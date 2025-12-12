@@ -595,3 +595,26 @@ html[data-theme="dark"] option {
   }
 }
 
+/* ---------- Consultation CTA ---------- */
+.consult-btn {
+  background: var(--button);
+  color: #ffffff;
+  padding: 8px 14px;
+  border-radius: var(--pill);
+  font-weight: 800;
+  font-size: 0.85rem;
+  text-decoration: none;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  transition: background 0.2s, box-shadow 0.2s, transform 0.1s;
+}
+
+.consult-btn:hover {
+  background: var(--button-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+/* Dark mode clarity */
+html[data-theme="dark"] .consult-btn {
+  color: #ffffff;
+}
