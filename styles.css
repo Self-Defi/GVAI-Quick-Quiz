@@ -501,3 +501,31 @@ footer a:hover { text-decoration: underline; }
   }
 }
 
+/* ---------- Dark mode readability fixes ---------- */
+html[data-theme="dark"] .hero h1,
+html[data-theme="dark"] .video-section h2,
+html[data-theme="dark"] .resources h2,
+html[data-theme="dark"] .quiz-section h2,
+html[data-theme="dark"] footer a {
+  color: rgba(243, 247, 255, 0.92); /* brighter heading/link text */
+}
+
+/* Make dropdown readable in dark mode */
+html[data-theme="dark"] select {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text);
+}
+
+html[data-theme="dark"] option {
+  background: #0b1b2a;
+  color: #f3f7ff;
+}
+
+/* Ensure labels stay readable */
+html[data-theme="dark"] .select-label,
+html[data-theme="dark"] .progress-meta,
+html[data-theme="dark"] .hero-subtitle,
+html[data-theme="dark"] .quiz-intro,
+html[data-theme="dark"] footer {
+  color: rgba(243, 247, 255, 0.82);
+}
