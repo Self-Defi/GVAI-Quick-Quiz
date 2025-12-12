@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -64,6 +64,13 @@
         <div class="brand-tagline">Digital Infrastructure Architect</div>
       </div>
     </div>
+
+    <div class="topbar-actions">
+      <button type="button" id="theme-toggle" class="icon-btn" aria-label="Toggle dark mode" title="Toggle dark mode">
+        <span class="icon" aria-hidden="true">🌓</span>
+        <span class="icon-label">Mode</span>
+      </button>
+    </div>
   </header>
 
   <main class="page">
@@ -115,19 +122,48 @@
           View Presentation Slides
         </a>
 
-        <!-- Scrolls user down to local quiz -->
         <a class="button" href="#quiz">Quiz Yourself</a>
       </div>
     </section>
 
-        <!-- QUIZ SECTION -->
+    <!-- QUIZ SECTION -->
     <section class="quiz-section" id="quiz">
       <div class="quiz-card">
-        <h2>Check Your Understanding</h2>
-        <p class="quiz-intro">
-          Answer a few quick questions based on what you learned from the video and slides.
-          Your responses are checked locally in your browser — nothing is sent anywhere.
-        </p>
+        <div class="quiz-header">
+          <div>
+            <h2>Check Your Understanding</h2>
+            <p class="quiz-intro">
+              Answer a few quick questions based on what you learned from the video and slides.
+              Your responses are checked locally in your browser — nothing is sent anywhere.
+            </p>
+          </div>
+
+          <div class="quiz-controls">
+            <label class="select-wrap" for="quiz-size">
+              <span class="select-label">Quiz size</span>
+              <select id="quiz-size">
+                <option value="20">20</option>
+                <option value="30">30</option>
+                <option value="40">40</option>
+              </select>
+            </label>
+
+            <button type="button" id="new-quiz" class="secondary small">
+              New randomized quiz
+            </button>
+          </div>
+        </div>
+
+        <!-- Progress -->
+        <div class="progress-row" aria-live="polite">
+          <div class="progress-meta">
+            <span id="progress-text">Progress: 0 / 0</span>
+            <span id="progress-percent">0%</span>
+          </div>
+          <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+            <div class="progress-fill" id="progress-fill"></div>
+          </div>
+        </div>
 
         <!-- JS will render ALL questions here -->
         <form id="quiz-form"></form>
@@ -136,12 +172,21 @@
           <button type="button" id="check-answers" class="primary">
             Check Answers
           </button>
+
+          <button type="button" id="download-results" class="secondary">
+            Download PDF Results
+          </button>
+
           <button type="button" id="reset-quiz" class="secondary">
             Reset Quiz
           </button>
         </div>
 
         <div id="quiz-summary" class="quiz-summary" hidden></div>
+
+        <p class="quiz-note">
+          Tip: This quiz auto-saves on this device (LocalStorage). You can close the tab and resume later.
+        </p>
       </div>
     </section>
 
@@ -152,7 +197,7 @@
       </a>
     </footer>
 
-    <!-- Make sure this is the LAST thing before </body> -->
     <script src="quiz.js"></script>
-  </body>
+  </main>
+</body>
 </html>
